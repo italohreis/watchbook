@@ -1,0 +1,63 @@
+
+# Ambientes virtuais
+venv/
+virtual/
+.env/
+.venv/
+.virtual/
+virtual
+
+# Configurações e credenciais
+*.env
+.env.local
+*.ini
+*.cfg
+*.conf
+
+# Cache e arquivos temporários
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Banco de dados local
+db.sqlite3
+
+# Diretórios de build e distribuição
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+
+# Testes
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos específicos de frameworks
+# Django
+*.log
+local_settings.py
+static_root/
+# Flask
+instance/
+# FastAPI
+.env.example
