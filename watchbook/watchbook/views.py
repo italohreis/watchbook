@@ -3,13 +3,13 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from usuarios.forms import FormularioLogin # Importamos nosso formulário customizado
+from usuarios.forms import FormularioLogin 
 
 class Login(View):
     def get(self, request):
         if request.user.is_authenticated:
-            # return redirect('listar-obras') 
-            return redirect('admin:index') 
+            return redirect('buscar-obras') 
+
 
         form = FormularioLogin()
         return render(request, 'usuarios/login.html', {'form': form})
@@ -24,9 +24,9 @@ class Login(View):
             
             if user is not None:
                 login(request, user)
-                # return redirect('listar-obras')
-                return redirect('admin:index') 
-        
+                return redirect('buscar-obras')
+
+       
         messages.error(request, 'Usuário ou senha inválidos.')
         return render(request, 'usuarios/login.html', {'form': form})
 
