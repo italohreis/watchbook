@@ -9,8 +9,7 @@ class Login(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('buscar-obras') 
-
-
+        
         form = FormularioLogin()
         return render(request, 'usuarios/login.html', {'form': form})
 

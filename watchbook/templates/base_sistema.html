@@ -59,7 +59,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'meus-registros' %}active{% else %}text-dark{% endif %}" href="{% url 'meus-registros' %}">
                                 <i class="bi bi-list-check me-2"></i> Meus Registros
                             </a>
                         </li>
