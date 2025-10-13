@@ -1,4 +1,5 @@
 from django.db import models
+from .consts import TIPOS
 
 class Obra(models.Model):
     titulo = models.CharField(max_length=200)
@@ -6,6 +7,7 @@ class Obra(models.Model):
     diretor = models.CharField(max_length=150, blank=True)
     genero = models.CharField(max_length=100)
     poster = models.ImageField(upload_to='posters/', blank=True, null=True)
+    tipo = models.CharField(max_length=10, choices=TIPOS, default='filme')
 
     def __str__(self):
         return f"{self.titulo} ({self.ano_lancamento})"
