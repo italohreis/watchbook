@@ -2,10 +2,30 @@
 {% load static %}
 
 {% block cabecalho_conteudo %}
-    <h1 class="h2">Catálogo de Obras</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h2 mb-0">Catálogo de Obras</h1>
+    </div>
 {% endblock %}
 
 {% block content %}
+<!-- Filtros por tipo -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Filtrar por tipo">
+        <a href="{% url 'buscar-obras' %}" 
+           class="btn {% if tipo_atual == 'todos' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-grid-3x3-gap me-1"></i> Todos
+        </a>
+        <a href="{% url 'buscar-obras' %}?tipo=filme" 
+           class="btn {% if tipo_atual == 'filme' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-camera-reels me-1"></i> Filmes
+        </a>
+        <a href="{% url 'buscar-obras' %}?tipo=serie" 
+           class="btn {% if tipo_atual == 'serie' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-tv me-1"></i> Séries
+        </a>
+    </div>
+</div>
+
 <div class="row">
     {% for obra in lista_obras %}
     <div class="col-md-6 col-lg-4 mb-4">

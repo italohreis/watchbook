@@ -31,9 +31,22 @@ class MeusRegistrosView(LoginRequiredMixin, ListView):
     model = RegistroAssistido
     template_name = 'usuarios/meus_registros.html'
     context_object_name = 'registros'
+    login_url = '/'
 
     def get_queryset(self):
-        return RegistroAssistido.objects.filter(usuario=self.request.user).select_related('obra')
+        queryset = RegistroAssistido.objects.filter(usuario=self.request.user).select_related('obra')
+        
+        # Filtrar por tipo se especificado na query string
+        tipo_filtro = self.request.GET.get('tipo')
+        if tipo_filtro and tipo_filtro in ['filme', 'serie']:
+            queryset = queryset.filter(obra__tipo=tipo_filtro)
+        
+        return queryset.order_by('-data_assistido')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tipo_atual'] = self.request.GET.get('tipo', 'todos')
+        return context
     
 
 class CadastrarUsuario(CreateView):

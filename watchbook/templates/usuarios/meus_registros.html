@@ -15,6 +15,24 @@
 {% endblock %}
 
 {% block content %}
+<!-- Filtros por tipo -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Filtrar por tipo">
+        <a href="{% url 'meus-registros' %}" 
+           class="btn {% if tipo_atual == 'todos' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-grid-3x3-gap me-1"></i> Todos
+        </a>
+        <a href="{% url 'meus-registros' %}?tipo=filme" 
+           class="btn {% if tipo_atual == 'filme' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-camera-reels me-1"></i> Filmes
+        </a>
+        <a href="{% url 'meus-registros' %}?tipo=serie" 
+           class="btn {% if tipo_atual == 'serie' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+            <i class="bi bi-tv me-1"></i> Séries
+        </a>
+    </div>
+</div>
+
 <div class="row g-4">
     {% for registro in registros %}
     <div class="col-12">
