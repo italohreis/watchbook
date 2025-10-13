@@ -1,6 +1,23 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from .models import RegistroAssistido
+
+class RegistroAssistidoForm(forms.ModelForm):
+    nota = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'type': 'number'}),
+        label="Nota (de 1 a 5)"
+    )
+    critica = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        required=False
+    )
+
+    class Meta:
+        model = RegistroAssistido
+        fields = ['nota', 'critica']
 
 class FormularioLogin(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(

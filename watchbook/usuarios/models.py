@@ -5,7 +5,7 @@ from catalogo.models import Obra
 class RegistroAssistido(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="registros")
     obra = models.ForeignKey(Obra, on_delete=models.CASCADE, related_name="registros")
-    data_assistido = models.DateField()
+    data_assistido = models.DateField(auto_now_add=True)
     nota = models.SmallIntegerField(blank=True, null=True)
     critica = models.TextField(blank=True, null=True)
 

@@ -21,11 +21,12 @@
                     {% endif %}
                 </div>
                 <div class="col-8">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ obra.titulo }}</h5>
                         <p class="card-text text-muted small">{{ obra.ano_lancamento }} • {{ obra.diretor }}</p>
                         <p class="card-text"><span class="badge bg-primary">{{ obra.genero }}</span></p>
-                        <button class="btn btn-sm btn-outline-primary mt-2">
+                        
+                        <button class="btn btn-sm btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#modal-assistir-{{ obra.id }}">
                            <i class="bi bi-plus-lg me-1"></i> Marcar como Assistido
                         </button>
                     </div>
@@ -33,10 +34,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-assistir-{{ obra.id }}" tabindex="-1" aria-labelledby="modalLabel-{{ obra.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-{{ obra.id }}">Registrar: {{ obra.titulo }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'registrar-assistido' obra.id %}" method="post">
+                        {% csrf_token %}
+                        {{ form_registro.as_p }}
+                        <button type="submit" class="btn btn-primary mt-3">Salvar Registro</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     {% empty %}
     <div class="col-12">
         <div class="alert alert-info" role="alert">
-            Nenhuma obra cadastrada ainda. Comece adicionando uma!
+            Nenhuma obra cadastrada ainda.
         </div>
     </div>
     {% endfor %}
