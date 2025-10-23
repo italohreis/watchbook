@@ -93,10 +93,10 @@
                                 Assistido em {{ registro.data_assistido|date:"d/m/Y" }}
                             </small>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button class="btn btn-outline-primary">
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEditarRegistro{{ registro.id }}">
                                     <i class="bi bi-pencil-square me-1"></i> Editar
                                 </button>
-                                <button class="btn btn-outline-danger">
+                                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirRegistro{{ registro.id }}">
                                     <i class="bi bi-trash-fill me-1"></i> Excluir
                                 </button>
                             </div>
@@ -105,6 +105,10 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Include dos Modals -->
+        {% include 'usuarios/_modal_editar_registro.html' with registro=registro %}
+        {% include 'usuarios/_modal_excluir_registro.html' with registro=registro %}
     </div>
     {% empty %}
     <div class="col-12">

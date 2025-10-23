@@ -1,0 +1,49 @@
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="modalExcluirRegistro{{ registro.id }}" tabindex="-1" aria-labelledby="modalExcluirRegistroLabel{{ registro.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalExcluirRegistroLabel{{ registro.id }}">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="bi bi-trash-fill text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <h6 class="text-center mb-3">Tem certeza que deseja excluir este registro?</h6>
+                <div class="bg-light rounded p-3 mb-3">
+                    <p class="mb-1"><strong>{{ registro.obra.titulo }}</strong></p>
+                    <p class="text-muted small mb-0">{{ registro.obra.ano_lancamento }} • {{ registro.obra.diretor }}</p>
+                    {% if registro.nota %}
+                    <div class="mt-2">
+                        <span class="small">Sua nota: </span>
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= registro.nota %}
+                                <i class="bi bi-star-fill text-warning"></i>
+                            {% else %}
+                                <i class="bi bi-star text-muted"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <p class="text-muted text-center mb-0 small">
+                    <i class="bi bi-info-circle me-1"></i>Esta ação não pode ser desfeita.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> Cancelar
+                </button>
+                <form action="{% url 'excluir-registro' registro.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash-fill me-1"></i> Sim, Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

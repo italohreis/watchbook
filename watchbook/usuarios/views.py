@@ -1,11 +1,10 @@
-from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from .forms import FormularioCadastro, RegistroAssistidoForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from catalogo.models import Obra
 from .models import RegistroAssistido
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.shortcuts import redirect
 
 class RegistrarObraAssistida(LoginRequiredMixin, CreateView):
@@ -26,6 +25,41 @@ class RegistrarObraAssistida(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         return redirect(self.request.META.get('HTTP_REFERER', 'buscar-obras'))
+    
+class EditarRegistroAssistido(LoginRequiredMixin, UpdateView):
+    model = RegistroAssistido
+    form_class = RegistroAssistidoForm
+    success_url = reverse_lazy('meus-registros')
+    login_url = '/'
+
+    def get_queryset(self):
+        # Garante que o usuário só pode editar seus próprios registros
+        return RegistroAssistido.objects.filter(usuario=self.request.user)
+    
+    def get_template_names(self):
+        # Não renderiza template, apenas processa o POST
+        return []
+    
+    def form_invalid(self, form):
+        # Em caso de erro, redireciona de volta
+        return redirect(self.request.META.get('HTTP_REFERER', 'meus-registros'))
+
+class ExcluirRegistroAssistido(LoginRequiredMixin, DeleteView):
+    model = RegistroAssistido
+    success_url = reverse_lazy('meus-registros')
+    login_url = '/'
+
+    def get_queryset(self):
+        # Garante que o usuário só pode excluir seus próprios registros
+        return RegistroAssistido.objects.filter(usuario=self.request.user)
+    
+    def get_template_names(self):
+        # Não renderiza template de confirmação, apenas processa o POST
+        return []
+    
+    def get(self, request, *args, **kwargs):
+        # Redireciona GET para a página de registros (evita acesso direto)
+        return redirect('meus-registros')
 
 class MeusRegistrosView(LoginRequiredMixin, ListView):
     model = RegistroAssistido

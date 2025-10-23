@@ -1,0 +1,67 @@
+<!-- Modal de Edição de Registro -->
+<style>
+    /* Estrelas cinzas por padrão */
+    .rating-group label { color: #ddd !important; }
+    /* Estrela selecionada e todas à direita ficam amarelas */
+    .rating-group input:checked ~ label { color: #ffc107 !important; }
+    /* Hover: estrela hover e todas à direita ficam amarelas */
+    .rating-group label:hover,
+    .rating-group label:hover ~ label { color: #ffc107 !important; }
+    /* Remove o amarelo das estrelas à esquerda do hover */
+    .rating-group:hover label { color: #ddd !important; }
+    .rating-group label:hover,
+    .rating-group label:hover ~ label { color: #ffc107 !important; }
+</style>
+
+<div class="modal fade" id="modalEditarRegistro{{ registro.id }}" tabindex="-1" aria-labelledby="modalEditarRegistroLabel{{ registro.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarRegistroLabel{{ registro.id }}">
+                    <i class="bi bi-pencil-square me-2"></i>Editar Registro
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <h6 class="fw-bold">{{ registro.obra.titulo }}</h6>
+                    <p class="text-muted small mb-0">{{ registro.obra.ano_lancamento }} • {{ registro.obra.diretor }}</p>
+                </div>
+                
+                <form action="{% url 'editar-registro' registro.id %}" method="post" id="form-editar-{{ registro.id }}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nota</label>
+                        <div class="rating-group d-flex flex-row-reverse justify-content-end gap-1 fs-3">
+                            {% for i in "54321" %}
+                            <input class="visually-hidden" type="radio" name="nota" value="{{ forloop.revcounter }}" 
+                                   id="star-{{ registro.id }}-{{ forloop.revcounter }}"
+                                   {% if registro.nota == forloop.revcounter %}checked{% endif %}>
+                            <label for="star-{{ registro.id }}-{{ forloop.revcounter }}" style="cursor: pointer;">
+                                <i class="bi bi-star-fill"></i>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted d-block mt-2">Clique para avaliar</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="critica-edit-{{ registro.id }}" class="form-label fw-semibold">Crítica</label>
+                        <textarea class="form-control" 
+                                  id="critica-edit-{{ registro.id }}" 
+                                  name="critica" 
+                                  rows="4" 
+                                  placeholder="Escreva sua opinião sobre a obra...">{{ registro.critica|default:'' }}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="form-editar-{{ registro.id }}" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i> Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
