@@ -30,21 +30,32 @@ class FormularioLogin(AuthenticationForm):
 class FormularioCadastro(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['first_name', 'username']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu nome'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu nome de usuário'}),
+        }
+        labels = {
+            'first_name': 'Nome',
+            'username': 'Nome de Usuário',
         }
 
-    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput(
-        attrs={'class': 'form-control'}
-    ))
-    password2 = forms.CharField(label='Confirmação da Senha', widget=forms.PasswordInput(
-        attrs={'class': 'form-control'}
-    ))
+    password1 = forms.CharField(
+        label='Senha', 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite sua senha'})
+    )
+    password2 = forms.CharField(
+        label='Confirmação da Senha', 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme sua senha'})
+    )
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Remove os textos de ajuda
+        self.fields['first_name'].help_text = None
         self.fields['username'].help_text = None
         self.fields['password1'].help_text = None
+        self.fields['password2'].help_text = None
+        # Torna o nome obrigatório
+        self.fields['first_name'].required = True
         self.fields['password2'].help_text = None
