@@ -26,6 +26,6 @@ urlpatterns = [
     path('logout/', Logout.as_view(), name='logout'),
     
     path('usuarios/', include('usuarios.urls')),
-    path('catalogo/', include('catalogo.urls')), 
-
+    path('catalogo/', include('catalogo.urls')),
+    path('amigos/', include('amizade.urls')),
 ]

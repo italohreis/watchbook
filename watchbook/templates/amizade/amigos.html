@@ -1,0 +1,129 @@
+{% extends 'base_sistema.html' %}
+
+{% block cabecalho_conteudo %}
+    <h1 class="h2">Amigos</h1>
+{% endblock %}
+
+{% block content %}
+{% if pedidos_pendentes %}
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Pedidos Pendentes ({{ pedidos_pendentes.count }})</h5>
+        <ul class="list-group">
+            {% for pedido in pedidos_pendentes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold">{{ pedido.de_usuario.username }}</span>
+                    <small class="text-muted">quer ser seu amigo(a).</small>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <form method="post" action="{% url 'responder-pedido' pedido.id 'aceitar' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success">Aceitar</button>
+                    </form>
+                    <form method="post" action="{% url 'responder-pedido' pedido.id 'recusar' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Recusar</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Encontrar Usuários</h5>
+        <p class="card-text text-muted">Busque outros usuários pelo nome ou username.</p>
+        
+        <form method="get" action="{% url 'pagina-amigos' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Buscar por nome de usuário...">
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+        </form>
+
+        {% if query %}
+            <hr>
+            <h6 class="card-subtitle mb-3 text-muted">Resultados da busca por "{{ query }}"</h6>
+            <ul class="list-group">
+                {% for item in usuarios_com_status %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="fw-bold">{{ item.usuario.username }}</span>
+                            {% if item.usuario.first_name %}
+                                <small class="text-muted">({{ item.usuario.first_name }})</small>
+                            {% endif %}
+                        </div>
+                        
+                        {% if item.status == 'ACEITO' %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle-fill me-1"></i> Já são amigos
+                            </span>
+                        {% elif item.status == 'PENDENTE' %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-clock-fill me-1"></i> Pedido Pendente
+                            </span>
+                        {% else %}
+                            <form method="post" action="{% url 'enviar-pedido' item.usuario.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-person-plus-fill me-1"></i> Adicionar
+                                </button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Nenhum usuário encontrado.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-3">
+            Meus Amigos 
+            {% if amigos %}
+                <span class="badge bg-primary">{{ amigos.count }}</span>
+            {% endif %}
+        </h5>
+        
+        {% if amigos %}
+            <div class="row g-3">
+                {% for amigo in amigos %}
+                <div class="col-md-6">
+                    <div class="card border">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i class="bi bi-person-circle me-2"></i>{{ amigo.username }}
+                                    </h6>
+                                    {% if amigo.first_name %}
+                                        <small class="text-muted">{{ amigo.first_name }}</small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-person-x-fill"></i> Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="card-text text-muted mb-0">
+                <i class="bi bi-info-circle me-2"></i>Você ainda não tem amigos adicionados. Use a busca acima para encontrar pessoas!
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

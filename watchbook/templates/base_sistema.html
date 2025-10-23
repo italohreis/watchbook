@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'pagina-amigos' %}active{% endif %}" href="{% url 'pagina-amigos' %}">
                                 <i class="bi bi-people-fill me-2"></i> Amigos
                             </a>
                         </li>
