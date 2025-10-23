@@ -8,18 +8,55 @@
 {% endblock %}
 
 {% block content %}
+<!-- Barra de Pesquisa -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" action="{% url 'buscar-obras' %}">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" 
+                       class="form-control border-start-0 ps-0" 
+                       name="q" 
+                       value="{{ query }}" 
+                       placeholder="Buscar obras por título..."
+                       autocomplete="off">
+                {% if tipo_atual != 'todos' %}
+                    <input type="hidden" name="tipo" value="{{ tipo_atual }}">
+                {% endif %}
+                {% if query %}
+                    <a href="{% url 'buscar-obras' %}{% if tipo_atual != 'todos' %}?tipo={{ tipo_atual }}{% endif %}" 
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg"></i> Limpar
+                    </a>
+                {% endif %}
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search me-1"></i> Buscar
+                </button>
+            </div>
+            {% if query %}
+                <small class="text-muted d-block mt-2">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Mostrando resultados para: <strong>"{{ query }}"</strong>
+                </small>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
 <!-- Filtros por tipo -->
 <div class="mb-4">
     <div class="btn-group" role="group" aria-label="Filtrar por tipo">
-        <a href="{% url 'buscar-obras' %}" 
+        <a href="{% url 'buscar-obras' %}{% if query %}?q={{ query }}{% endif %}" 
            class="btn {% if tipo_atual == 'todos' %}btn-primary{% else %}btn-outline-primary{% endif %}">
             <i class="bi bi-grid-3x3-gap me-1"></i> Todos
         </a>
-        <a href="{% url 'buscar-obras' %}?tipo=filme" 
+        <a href="{% url 'buscar-obras' %}?tipo=filme{% if query %}&q={{ query }}{% endif %}" 
            class="btn {% if tipo_atual == 'filme' %}btn-primary{% else %}btn-outline-primary{% endif %}">
             <i class="bi bi-camera-reels me-1"></i> Filmes
         </a>
-        <a href="{% url 'buscar-obras' %}?tipo=serie" 
+        <a href="{% url 'buscar-obras' %}?tipo=serie{% if query %}&q={{ query }}{% endif %}" 
            class="btn {% if tipo_atual == 'serie' %}btn-primary{% else %}btn-outline-primary{% endif %}">
             <i class="bi bi-tv me-1"></i> Séries
         </a>

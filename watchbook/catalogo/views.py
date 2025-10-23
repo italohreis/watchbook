@@ -14,10 +14,14 @@ class ListarObras(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset().order_by('titulo')
         
-        # Filtrar por tipo se especificado na query string
+        # Filtrar por tipo se especificado na query string e texto
         tipo_filtro = self.request.GET.get('tipo')
         if tipo_filtro and tipo_filtro in dict(TIPOS).keys(): 
             queryset = queryset.filter(tipo=tipo_filtro)
+
+        texto_filtro = self.request.GET.get('q')
+        if texto_filtro:
+            queryset = queryset.filter(titulo__icontains=texto_filtro)
         
         return queryset
     
@@ -25,4 +29,5 @@ class ListarObras(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['form_registro'] = RegistroAssistidoForm()
         context['tipo_atual'] = self.request.GET.get('tipo', 'todos')
+        context['query'] = self.request.GET.get('q', '')
         return context
