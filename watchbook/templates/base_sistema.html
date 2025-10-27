@@ -49,7 +49,7 @@
                 <div class="position-sticky pt-3">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'inicio' %}active{% else %}text-dark{% endif %}" href="{% url 'inicio' %}">
                                 <i class="bi bi-house-door-fill me-2"></i> Início
                             </a>
                         </li>

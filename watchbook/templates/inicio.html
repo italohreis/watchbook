@@ -1,0 +1,164 @@
+{% extends 'base_sistema.html' %}
+
+{% block cabecalho_conteudo %}
+    <h1 class="h2">Início</h1>
+{% endblock %}
+
+{% block content %}
+<!-- Card de Boas-vindas -->
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body text-white py-4">
+                <h3 class="mb-2">Bem-vindo ao seu Catálogo!</h3>
+                <p class="mb-0">Você assistiu {{ total_obras }} obra{{ total_obras|pluralize }} até agora</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Atividade Recente de Amigos -->
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-clock-history me-2 fs-5"></i>
+                    <h5 class="mb-0 fw-bold">Atividade Recente de Amigos</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if atividades_amigos %}
+                    {% for registro in atividades_amigos %}
+                    <div class="d-flex align-items-start gap-3 pb-3 mb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <!-- Avatar do amigo -->
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-person-fill text-primary"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Informações da atividade -->
+                        <div class="flex-grow-1">
+                            <p class="mb-1">
+                                <a href="{% url 'perfil-usuario-visitante' registro.usuario.id %}" class="text-decoration-none fw-bold text-dark">
+                                    {{ registro.usuario.first_name|default:registro.usuario.username }}
+                                </a>
+                                <small class="text-muted ms-1">assistiu</small>
+                                <strong class="text-dark">{{ registro.obra.titulo }}</strong>
+                            </p>
+                            
+                            <!-- Estrelas da avaliação -->
+                            {% if registro.nota %}
+                            <div class="d-flex gap-1 mb-1">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= registro.nota %}
+                                        <i class="bi bi-star-fill text-warning small"></i>
+                                    {% else %}
+                                        <i class="bi bi-star text-muted small"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Crítica (se houver) -->
+                            {% if registro.critica %}
+                            <p class="small text-muted mb-1 fst-italic">"{{ registro.critica|truncatewords:10 }}"</p>
+                            {% endif %}
+                            
+                            <!-- Data -->
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ registro.data_assistido|date:"d/m/Y" }}
+                            </small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3 mb-0">
+                            Nenhuma atividade recente de amigos.
+                            <br>
+                            <a href="{% url 'pagina-amigos' %}" class="btn btn-sm btn-outline-primary mt-2">
+                                <i class="bi bi-person-plus me-1"></i> Adicionar Amigos
+                            </a>
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Seus Registros Recentes -->
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">Seus Registros Recentes</h5>
+                    <a href="{% url 'meus-registros' %}" class="btn btn-sm btn-outline-primary">
+                        Ver Todos
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if meus_registros_recentes %}
+                    {% for registro in meus_registros_recentes %}
+                    <div class="pb-3 mb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <div class="d-flex gap-2 align-items-start">
+                            <!-- Poster mini -->
+                            <div class="flex-shrink-0">
+                                {% if registro.obra.poster %}
+                                    <img src="{{ registro.obra.poster.url }}" 
+                                         alt="{{ registro.obra.titulo }}" 
+                                         class="rounded"
+                                         style="width: 50px; height: 75px; object-fit: cover;">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center bg-secondary text-white rounded" 
+                                         style="width: 50px; height: 75px;">
+                                        <i class="bi bi-film"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Info da obra -->
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-bold">{{ registro.obra.titulo }}</h6>
+                                <p class="small text-muted mb-2">{{ registro.obra.ano_lancamento }}</p>
+                                
+                                <!-- Estrelas -->
+                                {% if registro.nota %}
+                                <div class="d-flex gap-1">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= registro.nota %}
+                                            <i class="bi bi-star-fill text-warning small"></i>
+                                        {% else %}
+                                            <i class="bi bi-star text-muted small"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Crítica resumida -->
+                                {% if registro.critica %}
+                                <p class="small text-muted mb-0 mt-1 fst-italic">"{{ registro.critica|truncatewords:8 }}"</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            {{ registro.data_assistido|date:"d/m/Y" }}
+                        </small>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-film text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3 mb-0">Você ainda não registrou nenhuma obra.</p>
+                        <a href="{% url 'buscar-obras' %}" class="btn btn-primary mt-3">
+                            <i class="bi bi-search me-2"></i> Buscar Obras
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
