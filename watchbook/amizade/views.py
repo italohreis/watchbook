@@ -115,3 +115,20 @@ class ResponderPedidoAmizade(LoginRequiredMixin, View):
             pedido.delete()
         
         return redirect('pagina-amigos')
+
+
+class RemoverAmizade(LoginRequiredMixin, View):
+    login_url = '/'
+
+    def post(self, request, user_id):
+        amigo = get_object_or_404(User, pk=user_id)
+        
+        amizade = Amizade.objects.filter(
+            Q(de_usuario=request.user, para_usuario=amigo, status='ACEITO') |
+            Q(de_usuario=amigo, para_usuario=request.user, status='ACEITO')
+        ).first()
+        
+        if amizade:
+            amizade.delete()
+        
+        return redirect('pagina-amigos')

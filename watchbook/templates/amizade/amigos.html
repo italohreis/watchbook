@@ -54,17 +54,22 @@
             <ul class="list-group">
                 {% for item in usuarios_com_status %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
+                        <a href="{% url 'perfil-usuario-visitante' item.usuario.id %}" class="text-decoration-none text-dark">
                             <span class="fw-bold">{{ item.usuario.username }}</span>
                             {% if item.usuario.first_name %}
                                 <small class="text-muted">({{ item.usuario.first_name }})</small>
                             {% endif %}
-                        </div>
+                        </a>
                         
                         {% if item.status == 'ACEITO' %}
-                            <span class="badge bg-success">
-                                <i class="bi bi-check-circle-fill me-1"></i> Já são amigos
-                            </span>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'perfil-usuario-visitante' item.usuario.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye-fill me-1"></i> Ver Perfil
+                                </a>
+                                <span class="badge bg-success align-self-center">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Amigos
+                                </span>
+                            </div>
                         {% elif item.status == 'PENDENTE' %}
                             <span class="badge bg-warning text-dark">
                                 <i class="bi bi-clock-fill me-1"></i> Pedido Pendente
@@ -102,17 +107,50 @@
                     <div class="card border">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">
-                                        <i class="bi bi-person-circle me-2"></i>{{ amigo.username }}
-                                    </h6>
-                                    {% if amigo.first_name %}
-                                        <small class="text-muted">{{ amigo.first_name }}</small>
-                                    {% endif %}
+                                <a href="{% url 'perfil-usuario-visitante' amigo.id %}" class="text-decoration-none text-dark flex-grow-1">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-person-circle me-2"></i>{{ amigo.username }}
+                                        </h6>
+                                        {% if amigo.first_name %}
+                                            <small class="text-muted">{{ amigo.first_name }}</small>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'perfil-usuario-visitante' amigo.id %}" class="btn btn-outline-primary">
+                                        <i class="bi bi-eye-fill"></i> Ver Perfil
+                                    </a>
+                                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalRemoverAmigo{{ amigo.id }}">
+                                        <i class="bi bi-person-x-fill"></i>
+                                    </button>
                                 </div>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-person-x-fill"></i> Remover
-                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal de Confirmação -->
+                <div class="modal fade" id="modalRemoverAmigo{{ amigo.id }}" tabindex="-1" aria-labelledby="modalRemoverAmigoLabel{{ amigo.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalRemoverAmigoLabel{{ amigo.id }}">
+                                    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Confirmar Remoção
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Tem certeza que deseja remover <strong>{{ amigo.username }}</strong> da sua lista de amigos?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form method="post" action="{% url 'remover-amizade' amigo.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-person-x-fill me-1"></i> Remover Amigo
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

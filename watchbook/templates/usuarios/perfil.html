@@ -1,0 +1,231 @@
+{% extends 'base_sistema.html' %}
+
+{% block cabecalho_conteudo %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h2 mb-0">
+            {% if is_own_profile %}
+                Meu Perfil
+            {% else %}
+                Perfil de {{ perfil_usuario.username }}
+            {% endif %}
+        </h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+<!-- Card do Perfil -->
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <!-- Avatar e informações básicas -->
+                <div class="d-flex align-items-center gap-4 mb-4">
+                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 100px; height: 100px;">
+                        <i class="bi bi-person-circle text-secondary" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <div class="flex-grow-1">
+                        <h2 class="h3 mb-1 fw-bold">
+                            {% if perfil_usuario.first_name %}
+                                {{ perfil_usuario.first_name }} {% if perfil_usuario.last_name %}{{ perfil_usuario.last_name }}{% endif %}
+                            {% else %}
+                                {{ perfil_usuario.username }}
+                            {% endif %}
+                        </h2>
+                        <p class="text-muted mb-2">@{{ perfil_usuario.username }}</p>
+                    </div>
+                    
+                    <div class="flex-shrink-0">
+                        {% if is_own_profile %}
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-pencil-square me-2"></i> Editar Perfil
+                            </button>
+                        {% else %}
+                            {% if sao_amigos %}
+                                <span class="badge bg-success fs-6 px-3 py-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Amigos
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Estatísticas -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="mb-2">
+                    <i class="bi bi-collection-play text-primary" style="font-size: 2.5rem;"></i>
+                </div>
+                <h3 class="display-4 fw-bold text-primary mb-2">{{ total_obras }}</h3>
+                <p class="text-muted mb-0">Obra{{ total_obras|pluralize }} Assistida{{ total_obras|pluralize }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="mb-2">
+                    <i class="bi bi-people-fill text-success" style="font-size: 2.5rem;"></i>
+                </div>
+                <h3 class="display-4 fw-bold text-success mb-2">{{ total_amigos }}</h3>
+                <p class="text-muted mb-0">Amigo{{ total_amigos|pluralize }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="mb-2">
+                    <i class="bi bi-star-fill text-warning" style="font-size: 2.5rem;"></i>
+                </div>
+                {% if nota_media %}
+                <h3 class="display-4 fw-bold text-warning mb-2">{{ nota_media|floatformat:1 }}</h3>
+                <p class="text-muted mb-0">Nota Média</p>
+                {% else %}
+                <h3 class="display-4 fw-bold text-muted mb-2">-</h3>
+                <p class="text-muted mb-0">Sem Avaliações</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gênero Favorito -->
+    {% if genero_favorito %}
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-heart-fill text-primary" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Gênero Favorito</h5>
+                        <h4 class="mb-0 fw-bold text-primary">{{ genero_favorito }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Estatísticas de Filmes e Séries -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-camera-reels text-info" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1 text-muted">Filmes Assistidos</h5>
+                        <h3 class="mb-0 fw-bold">{{ total_filmes }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-tv text-danger" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1 text-muted">Séries Assistidas</h5>
+                        <h3 class="mb-0 fw-bold">{{ total_series }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Avaliações Recentes -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 pt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-bold">Avaliações Recentes</h4>
+                    {% if is_own_profile %}
+                        <a href="{% url 'meus-registros' %}" class="btn btn-sm btn-outline-primary">
+                            Ver Todos <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                {% if registros_recentes %}
+                    {% for registro in registros_recentes %}
+                    <div class="d-flex gap-3 pb-3 mb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <!-- Poster da obra -->
+                        <div class="flex-shrink-0">
+                            {% if registro.obra.poster %}
+                                <img src="{{ registro.obra.poster.url }}" 
+                                     alt="Poster de {{ registro.obra.titulo }}" 
+                                     class="rounded"
+                                     style="width: 60px; height: 90px; object-fit: cover;">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center bg-secondary text-white rounded" 
+                                     style="width: 60px; height: 90px;">
+                                    <i class="bi bi-film" style="font-size: 1.5rem;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Informações da obra -->
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold">{{ registro.obra.titulo }}</h6>
+                            <p class="small text-muted mb-2">{{ registro.obra.ano_lancamento }} • {{ registro.obra.diretor }}</p>
+                            
+                            <!-- Estrelas -->
+                            <div class="d-flex gap-1 mb-2">
+                                {% if registro.nota %}
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= registro.nota %}
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        {% else %}
+                                            <i class="bi bi-star text-muted"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted small">Não avaliado</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Crítica (se houver) -->
+                            {% if registro.critica %}
+                            <p class="small text-muted mb-0 fst-italic">"{{ registro.critica|truncatewords:15 }}"</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Data -->
+                        <div class="flex-shrink-0 text-end">
+                            <small class="text-muted">{{ registro.data_assistido|date:"d/m/Y" }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-film text-muted" style="font-size: 3rem;"></i>
+                        {% if is_own_profile %}
+                            <p class="text-muted mt-3 mb-0">Você ainda não registrou nenhuma obra.</p>
+                            <a href="{% url 'buscar-obras' %}" class="btn btn-primary mt-3">
+                                <i class="bi bi-search me-2"></i> Buscar Obras
+                            </a>
+                        {% else %}
+                            <p class="text-muted mt-3 mb-0">Este usuário ainda não registrou nenhuma obra.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,9 +3,10 @@ from .forms import FormularioCadastro, RegistroAssistidoForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from catalogo.models import Obra
-from .models import RegistroAssistido
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from .models import RegistroAssistido, PerfilUsuario
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView, TemplateView
 from django.shortcuts import redirect
+from django.contrib import messages
 
 class RegistrarObraAssistida(LoginRequiredMixin, CreateView):
     form_class = RegistroAssistidoForm
@@ -14,16 +15,24 @@ class RegistrarObraAssistida(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         obra_id = self.kwargs.get('obra_id')
         obra = get_object_or_404(Obra, id=obra_id)
-        
-        form.instance.usuario = self.request.user
+        usuario = self.request.user
+
+        # Verifica se já existe registro dessa obra para este usuário
+        if RegistroAssistido.objects.filter(usuario=usuario, obra=obra).exists():
+            messages.warning(self.request, 'Você já marcou esta obra como assistida.')
+            return redirect(self.request.META.get('HTTP_REFERER', 'buscar-obras'))
+
+        form.instance.usuario = usuario
         form.instance.obra = obra
-        
+
+        messages.success(self.request, 'Registro salvo com sucesso!')
         return super().form_valid(form)
 
     def get_template_names(self):
         return []
 
     def form_invalid(self, form):
+        messages.error(self.request, 'Não foi possível salvar. Verifique os campos e tente novamente.')
         return redirect(self.request.META.get('HTTP_REFERER', 'buscar-obras'))
     
 class EditarRegistroAssistido(LoginRequiredMixin, UpdateView):
@@ -87,3 +96,40 @@ class CadastrarUsuario(CreateView):
     form_class = FormularioCadastro
     template_name = 'usuarios/cadastrar.html'
     success_url = reverse_lazy('login') 
+
+
+class PerfilUsuarioView(LoginRequiredMixin, TemplateView):
+    template_name = 'usuarios/perfil.html'
+    login_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        user_id = self.kwargs.get('user_id')
+        if user_id:
+            perfil = get_object_or_404(PerfilUsuario, pk=user_id)
+            is_own_profile = False
+        else:
+            perfil = PerfilUsuario.objects.get(pk=self.request.user.pk)
+            is_own_profile = True
+        
+        context['perfil_usuario'] = perfil
+        context['is_own_profile'] = is_own_profile
+        
+        context['total_obras'] = perfil.total_obras
+        context['total_filmes'] = perfil.total_filmes
+        context['total_series'] = perfil.total_series
+        context['genero_favorito'] = perfil.genero_favorito
+        context['nota_media'] = perfil.nota_media
+        context['total_amigos'] = perfil.total_amigos
+        
+        context['registros_recentes'] = perfil.get_registros_recentes(limit=5)
+        
+        if not is_own_profile:
+            usuario_logado = PerfilUsuario.objects.get(pk=self.request.user.pk)
+            context['sao_amigos'] = usuario_logado.sao_amigos(perfil)
+        else:
+            context['sao_amigos'] = False
+            
+        return context
+ 
