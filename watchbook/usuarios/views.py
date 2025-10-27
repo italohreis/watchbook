@@ -61,7 +61,7 @@ class ExcluirRegistroAssistido(LoginRequiredMixin, DeleteView):
         # Redireciona GET para a página de registros (evita acesso direto)
         return redirect('meus-registros')
 
-class MeusRegistrosView(LoginRequiredMixin, ListView):
+class MeusRegistros(LoginRequiredMixin, ListView):
     model = RegistroAssistido
     template_name = 'usuarios/meus_registros.html'
     context_object_name = 'registros'
