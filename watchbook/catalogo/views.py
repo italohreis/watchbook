@@ -1,4 +1,3 @@
-# catalogo/views.py
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Obra
@@ -14,7 +13,6 @@ class ListarObras(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset().order_by('titulo')
         
-        # Filtrar por tipo se especificado na query string e texto
         tipo_filtro = self.request.GET.get('tipo')
         if tipo_filtro and tipo_filtro in dict(TIPOS).keys(): 
             queryset = queryset.filter(tipo=tipo_filtro)
