@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WatchBook</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="d-flex flex-column h-100">
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">🎬 WatchBook</a>
+                <a class="navbar-brand" href="{% url 'inicio' %}">
+                    <i class="bi bi-film"></i> WatchBook
+                </a>
             </div>
         </nav>
     </header>
-
+    
     <main class="flex-shrink-0">
         <div class="container mt-4">
             {% block content %}

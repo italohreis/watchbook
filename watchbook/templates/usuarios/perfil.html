@@ -157,6 +157,10 @@
                         <a href="{% url 'meus-registros' %}" class="btn btn-sm btn-outline-primary">
                             Ver Todos <i class="bi bi-arrow-right ms-1"></i>
                         </a>
+                    {% else %}
+                        <a href="{% url 'registros-usuario' perfil_usuario.id %}" class="btn btn-sm btn-outline-primary">
+                            Ver Todos <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
                     {% endif %}
                 </div>
             </div>

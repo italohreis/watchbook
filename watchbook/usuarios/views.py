@@ -132,4 +132,43 @@ class PerfilUsuarioView(LoginRequiredMixin, TemplateView):
             context['sao_amigos'] = False
             
         return context
+
+
+class RegistrosUsuario(LoginRequiredMixin, ListView):
+    """View para visualizar todos os registros de um usuário específico"""
+    model = RegistroAssistido
+    template_name = 'usuarios/registros_usuario.html'
+    context_object_name = 'registros'
+    login_url = '/'
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')
+        usuario = get_object_or_404(PerfilUsuario, pk=user_id)
+        
+        queryset = RegistroAssistido.objects.filter(
+            usuario=usuario
+        ).select_related('obra')
+        
+        # Filtrar por tipo se especificado
+        tipo_filtro = self.request.GET.get('tipo')
+        if tipo_filtro and tipo_filtro in ['filme', 'serie']:
+            queryset = queryset.filter(obra__tipo=tipo_filtro)
+        
+        return queryset.order_by('-data_assistido', '-id')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs.get('user_id')
+        usuario = get_object_or_404(PerfilUsuario, pk=user_id)
+        
+        context['usuario_perfil'] = usuario
+        context['is_own_profile'] = usuario.id == self.request.user.id
+        context['tipo_atual'] = self.request.GET.get('tipo', 'todos')
+        
+        # Verificar se são amigos
+        if not context['is_own_profile']:
+            usuario_logado = PerfilUsuario.objects.get(pk=self.request.user.pk)
+            context['sao_amigos'] = usuario_logado.sao_amigos(usuario)
+        
+        return context
  

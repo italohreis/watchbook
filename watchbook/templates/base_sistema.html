@@ -19,7 +19,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">🎬 WatchBook</a>
+                <a class="navbar-brand" href="{% url 'inicio' %}">
+                    <i class="bi bi-film"></i> WatchBook
+                </a>
                 <div class="d-flex align-items-center">
                     <span class="navbar-text me-2">
                         {{ user.username }}
