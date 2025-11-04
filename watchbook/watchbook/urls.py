@@ -32,4 +32,5 @@ urlpatterns = [
 
     # API 
     path('api/login/', LoginAPI.as_view(), name='api-login'),
+    path('api/', include('usuarios.api_urls')),
 ]
