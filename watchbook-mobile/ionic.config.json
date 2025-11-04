@@ -1,0 +1,7 @@
+{
+  "name": "watchbook-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
