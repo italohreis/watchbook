@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import Login, Logout, Inicio
+from .views import Login, Logout, Inicio, LoginAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +29,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('catalogo/', include('catalogo.urls')),
     path('amigos/', include('amizade.urls')),
+
+    # API 
+    path('api/login/', LoginAPI.as_view(), name='api-login'),
 ]
