@@ -3,16 +3,6 @@
   background: var(--ion-color-light);
 }
 
-.filter-container {
-  padding: 8px 12px 12px 12px;
-  background: var(--ion-color-light);
-  margin-bottom: 8px;
-
-  ion-segment {
-    --background: white;
-  }
-}
-
 .obra-card {
   height: 100%;
   margin: 0;
@@ -72,18 +62,6 @@ ion-card-content {
   ion-badge {
     font-size: 0.75rem;
     padding: 4px 8px;
-  }
-}
-
-ion-segment {
-  --background: var(--ion-color-light);
-}
-
-ion-segment-button {
-  font-size: 0.9rem;
-  
-  ion-icon {
-    margin-bottom: 4px;
   }
 }
 

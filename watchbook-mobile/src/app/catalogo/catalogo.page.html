@@ -15,25 +15,10 @@
   </div>
 
   <!-- Filtros por tipo -->
-  <div class="filter-container">
-    <ion-segment 
-      [(ngModel)]="tipo_filtro" 
-      (ionChange)="filtrarPorTipo($event)"
-      value="todos">
-      <ion-segment-button value="todos">
-        <ion-icon name="grid-outline"></ion-icon>
-        <ion-label>Todos</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="filme">
-        <ion-icon name="film-outline"></ion-icon>
-        <ion-label>Filmes</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="serie">
-        <ion-icon name="tv-outline"></ion-icon>
-        <ion-label>Séries</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+  <app-tipo-filter 
+    [(value)]="tipo_filtro"
+    (valueChange)="filtrarPorTipo($event)">
+  </app-tipo-filter>
 
   <!-- Mensagem quando há busca ativa -->
   <div *ngIf="termo_busca" class="ion-padding-horizontal ion-padding-bottom">

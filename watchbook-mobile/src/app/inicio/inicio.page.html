@@ -6,8 +6,15 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- Estatísticas -->
+  <!-- Card de Boas-vindas com Gradiente -->
   <div class="ion-padding">
+    <div class="welcome-card">
+      <h2>Bem-vindo ao seu Catálogo!</h2>
+    </div>
+  </div>
+
+  <!-- Estatísticas -->
+  <div class="ion-padding-horizontal ion-padding-bottom">
     <ion-card>
       <ion-card-content>
         <div class="estatisticas-container">
@@ -32,9 +39,14 @@
 
   <!-- Meus Registros Recentes -->
   <div class="ion-padding-horizontal" *ngIf="meus_registros.length > 0">
-    <ion-text>
-      <h3>Meus Registros Recentes</h3>
-    </ion-text>
+    <div class="section-header">
+      <ion-text>
+        <h3>Meus Registros Recentes</h3>
+      </ion-text>
+      <ion-button fill="outline" size="small" [routerLink]="['/tabs/registros']">
+        Ver Todos
+      </ion-button>
+    </div>
     
     <ion-card *ngFor="let registro of meus_registros">
       <ion-item lines="none">

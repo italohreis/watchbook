@@ -22,8 +22,6 @@ import {
   IonIcon,
   IonButton,
   IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
   IonBadge,
   IonCol,
   IonRow,
@@ -34,6 +32,7 @@ import { Obra } from './models/obra.model';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
+import { TipoFilterComponent } from '../components/tipo-filter/tipo-filter.component';
 import { addIcons } from 'ionicons';
 import {
   searchOutline,
@@ -51,12 +50,11 @@ import {
   styleUrls: ['./catalogo.page.scss'],
   imports: [
     AppHeaderComponent,
+    TipoFilterComponent,
     IonGrid,
     IonRow,
     IonCol,
     IonBadge,
-    IonSegmentButton,
-    IonSegment,
     IonLabel,
     IonItem,
     IonList,
@@ -171,7 +169,7 @@ export class CatalogoPage implements OnInit {
   }
 
   async filtrarPorTipo(event: any) {
-    this.tipo_filtro = event.detail.value;
+    this.tipo_filtro = event;
     this.consultarObrasSistemaWeb();
   }
 

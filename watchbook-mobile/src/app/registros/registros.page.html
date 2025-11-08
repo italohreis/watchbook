@@ -1,0 +1,112 @@
+<app-header pageTitle="Meus Registros"></app-header>
+
+<ion-content [fullscreen]="true">
+  
+  <!-- Filtros por tipo -->
+  <app-tipo-filter 
+    [(value)]="tipo_filtro"
+    (valueChange)="filtrarPorTipo($event)">
+  </app-tipo-filter>
+
+  <!-- Badge com total -->
+  <div class="ion-padding-horizontal ion-padding-top">
+    <ion-badge color="primary" class="total-badge">
+      Total: {{ registros_filtrados.length }} obra{{ registros_filtrados.length !== 1 ? 's' : '' }}
+    </ion-badge>
+  </div>
+
+  <!-- Lista de Registros -->
+  <div class="ion-padding">
+    <ion-item-sliding *ngFor="let registro of registros_filtrados">
+      <ion-item lines="none" class="registro-item">
+        <ion-card class="registro-card">
+          <ion-row class="ion-no-padding">
+            <!-- Poster -->
+            <ion-col size="4" size-md="3" class="ion-no-padding">
+              <ion-thumbnail class="poster-thumbnail">
+                <img 
+                  [src]="obterUrlPoster(registro.obra.poster)" 
+                  [alt]="'Poster de ' + registro.obra.titulo"
+                  (error)="$any($event.target).src='assets/placeholder-poster.png'"/>
+              </ion-thumbnail>
+            </ion-col>
+
+            <!-- Conteúdo -->
+            <ion-col size="8" size-md="9">
+              <ion-card-header>
+                <ion-card-title class="obra-titulo">{{ registro.obra.titulo }}</ion-card-title>
+                <ion-card-subtitle>
+                  <ion-icon name="calendar-outline" size="small"></ion-icon>
+                  {{ registro.obra.ano_lancamento }} • {{ registro.obra.diretor }}
+                </ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-card-content>
+                <!-- Badges -->
+                <div class="badges-container">
+                  <ion-badge color="primary">{{ registro.obra.genero }}</ion-badge>
+                  <ion-badge color="secondary">{{ registro.obra.tipo_display }}</ion-badge>
+                </div>
+
+                <!-- Estrelas -->
+                <div class="avaliacao-container">
+                  <span class="avaliacao-label">Sua nota:</span>
+                  <div class="estrelas">
+                    <ion-icon 
+                      *ngFor="let preenchida of gerarEstrelas(registro.nota)"
+                      [name]="preenchida ? 'star' : 'star-outline'"
+                      [color]="preenchida ? 'warning' : 'medium'"
+                      size="small">
+                    </ion-icon>
+                  </div>
+                </div>
+
+                <!-- Crítica -->
+                <div *ngIf="registro.critica" class="critica-container">
+                  <p class="critica-text">"{{ registro.critica }}"</p>
+                </div>
+
+                <!-- Rodapé: Data -->
+                <div class="card-footer">
+                  <div class="data-assistido">
+                    <ion-icon name="calendar-outline" size="small"></ion-icon>
+                    <small>{{ formatarData(registro.data_assistido) }}</small>
+                  </div>
+                </div>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-item>
+
+      <!-- Opções de Slide -->
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="abrirModalEdicao(registro)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="confirmarExclusao(registro)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <!-- Mensagem quando não há registros -->
+    <ion-card *ngIf="registros_filtrados.length === 0" class="empty-state">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="film-outline" size="large" color="medium"></ion-icon>
+        <h3>Nenhum registro encontrado</h3>
+        <p *ngIf="tipo_filtro !== 'todos'">
+          <ion-text color="medium">
+            <small>Você não tem registros de {{ tipo_filtro === 'filme' ? 'filmes' : 'séries' }}</small>
+          </ion-text>
+        </p>
+        <p *ngIf="tipo_filtro === 'todos'">
+          <ion-text color="medium">
+            <small>Comece a construir seu catálogo pessoal!</small>
+          </ion-text>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

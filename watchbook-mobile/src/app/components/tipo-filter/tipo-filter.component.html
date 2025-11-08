@@ -1,0 +1,18 @@
+<div class="filter-container">
+  <ion-segment 
+    [value]="value"
+    (ionChange)="onFilterChange($event)">
+    <ion-segment-button value="todos">
+      <ion-icon name="grid-outline"></ion-icon>
+      <ion-label>Todos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="filme">
+      <ion-icon name="film-outline"></ion-icon>
+      <ion-label>Filmes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="serie">
+      <ion-icon name="tv-outline"></ion-icon>
+      <ion-label>Séries</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div>

@@ -19,6 +19,7 @@ import { ToastController } from '@ionic/angular';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { Storage } from '@ionic/storage-angular'; 
 import { Usuario } from './models/usuario.model';
+import { AppHeaderComponent } from '../components/app-header/app-header.component';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ import { Usuario } from './models/usuario.model';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
+    AppHeaderComponent,
     IonContent,
     IonLabel,
     IonInput,

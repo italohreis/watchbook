@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   IonContent,
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonButton,
   LoadingController,
   NavController,
   ToastController,
@@ -46,6 +48,8 @@ import {
   styleUrls: ['./inicio.page.scss'],
   imports: [
     AppHeaderComponent,
+    RouterLink,
+    IonButton,
     IonRefresherContent,
     IonRefresher,
     IonBadge,

@@ -1,3 +1,21 @@
+// Welcome Card com Gradiente
+.welcome-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 24px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+  }
+
+}
+
+// Estatísticas
 .estatisticas-container {
   display: flex;
   justify-content: space-around;
@@ -75,6 +93,17 @@ h3 {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: var(--ion-color-dark);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  h3 {
+    margin: 0;
+  }
 }
 
 @media (max-width: 576px) {
