@@ -1,13 +1,9 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>WatchBook</ion-title>
-  </ion-toolbar>
-  <ion-toolbar color="light">
-    <ion-title size="small" class="section-title">Catálogo</ion-title>
-  </ion-toolbar>
+<app-header pageTitle="Catálogo"></app-header>
 
+<ion-content [fullscreen]="true">
+  
   <!-- Barra de Pesquisa -->
-  <ion-toolbar color="light" class="search-toolbar">
+  <div class="search-container">
     <ion-searchbar 
       [(ngModel)]="termo_busca"
       (ionInput)="buscarObra($event)"
@@ -16,10 +12,10 @@
       animated="true"
       show-clear-button="focus">
     </ion-searchbar>
-  </ion-toolbar>
+  </div>
 
   <!-- Filtros por tipo -->
-  <ion-toolbar color="light" class="filter-toolbar">
+  <div class="filter-container">
     <ion-segment 
       [(ngModel)]="tipo_filtro" 
       (ionChange)="filtrarPorTipo($event)"
@@ -37,13 +33,10 @@
         <ion-label>Séries</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </ion-toolbar>
-</ion-header>
+  </div>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  
   <!-- Mensagem quando há busca ativa -->
-  <div *ngIf="termo_busca" class="ion-padding-bottom">
+  <div *ngIf="termo_busca" class="ion-padding-horizontal ion-padding-bottom">
     <ion-text color="medium">
       <p class="ion-text-center">
         <small>Mostrando resultados para: <strong>"{{ termo_busca }}"</strong></small>
@@ -52,7 +45,7 @@
   </div>
 
   <!-- Grid de Obras -->
-  <ion-grid>
+  <ion-grid class="ion-padding">
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let obra of lista_obras">
         <ion-card class="obra-card">

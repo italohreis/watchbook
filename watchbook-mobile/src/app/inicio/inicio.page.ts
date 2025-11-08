@@ -28,6 +28,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Registro } from './models/registro.model';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
+import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { addIcons } from 'ionicons';
 import {
   homeOutline,
@@ -44,6 +45,7 @@ import {
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
   imports: [
+    AppHeaderComponent,
     IonRefresherContent,
     IonRefresher,
     IonBadge,

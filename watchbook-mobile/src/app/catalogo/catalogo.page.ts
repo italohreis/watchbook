@@ -33,6 +33,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Obra } from './models/obra.model';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
+import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { addIcons } from 'ionicons';
 import {
   searchOutline,
@@ -49,6 +50,7 @@ import {
   templateUrl: './catalogo.page.html',
   styleUrls: ['./catalogo.page.scss'],
   imports: [
+    AppHeaderComponent,
     IonGrid,
     IonRow,
     IonCol,

@@ -1,6 +1,16 @@
-.section-title {
-  font-weight: 600;
-  color: var(--ion-color-dark);
+.search-container {
+  padding: 12px;
+  background: var(--ion-color-light);
+}
+
+.filter-container {
+  padding: 8px 12px 12px 12px;
+  background: var(--ion-color-light);
+  margin-bottom: 8px;
+
+  ion-segment {
+    --background: white;
+  }
 }
 
 .obra-card {
@@ -17,14 +27,6 @@
   ion-row {
     height: 100%;
   }
-}
-
-.search-toolbar {
-  padding: 8px 0;
-}
-
-.filter-toolbar {
-  padding: 8px 0;
 }
 
 .poster-thumbnail {

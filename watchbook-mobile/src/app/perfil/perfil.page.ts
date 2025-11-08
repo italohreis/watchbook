@@ -24,6 +24,7 @@ import {
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
+import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { addIcons } from 'ionicons';
 import {
   personOutline,
@@ -40,6 +41,7 @@ import {
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   imports: [
+    AppHeaderComponent,
     IonAvatar,
     IonButton,
     IonLabel,
