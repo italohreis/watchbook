@@ -1,0 +1,146 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>WatchBook</ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="light">
+    <ion-title size="small" class="section-title">Início</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <ion-refresher slot="fixed" (ionRefresh)="atualizarDados($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Estatísticas -->
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-content>
+        <div class="estatisticas-container">
+          <div class="estatistica-item">
+            <ion-icon name="film-outline" color="primary" size="large"></ion-icon>
+            <div>
+              <h2>{{ estatisticas.total_obras }}</h2>
+              <p>Obras Assistidas</p>
+            </div>
+          </div>
+          <div class="estatistica-item">
+            <ion-icon name="people-outline" color="secondary" size="large"></ion-icon>
+            <div>
+              <h2>{{ estatisticas.total_amigos }}</h2>
+              <p>Amigos</p>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Meus Registros Recentes -->
+  <div class="ion-padding-horizontal" *ngIf="meus_registros.length > 0">
+    <ion-text>
+      <h3>Meus Registros Recentes</h3>
+    </ion-text>
+    
+    <ion-card *ngFor="let registro of meus_registros">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img 
+            [src]="obterUrlPoster(registro.obra.poster)" 
+            [alt]="'Poster de ' + registro.obra.titulo"
+            (error)="$any($event.target).src='assets/placeholder-poster.png'"/>
+        </ion-thumbnail>
+        <ion-label>
+          <h2><strong>{{ registro.obra.titulo }}</strong></h2>
+          <p>
+            <ion-icon name="calendar-outline" size="small"></ion-icon>
+            {{ registro.obra.ano_lancamento }}
+          </p>
+          <p>
+            <ion-badge color="primary">{{ registro.obra.genero }}</ion-badge>
+          </p>
+          <div class="estrelas">
+            <ion-icon 
+              *ngFor="let preenchida of gerarEstrelas(registro.nota)"
+              [name]="preenchida ? 'star' : 'star-outline'"
+              [color]="preenchida ? 'warning' : 'medium'"
+              size="small">
+            </ion-icon>
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-card-content *ngIf="registro.critica">
+        <ion-text color="medium">
+          <p class="critica-text">{{ registro.critica }}</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Atividades dos Amigos -->
+  <div class="ion-padding-horizontal">
+    <ion-text>
+      <h3>Atividades dos Amigos</h3>
+    </ion-text>
+    
+    <ion-card *ngFor="let atividade of atividades_amigos">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-icon name="people-outline" size="small"></ion-icon>
+          {{ atividade.usuario_nome }}
+        </ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img 
+            [src]="obterUrlPoster(atividade.obra.poster)" 
+            [alt]="'Poster de ' + atividade.obra.titulo"
+            (error)="$any($event.target).src='assets/placeholder-poster.png'"/>
+        </ion-thumbnail>
+        <ion-label>
+          <h2><strong>{{ atividade.obra.titulo }}</strong></h2>
+          <p>
+            <ion-icon name="calendar-outline" size="small"></ion-icon>
+            {{ atividade.obra.ano_lancamento }}
+          </p>
+          <p>
+            <ion-badge color="primary">{{ atividade.obra.genero }}</ion-badge>
+          </p>
+          <div class="estrelas">
+            <ion-icon 
+              *ngFor="let preenchida of gerarEstrelas(atividade.nota)"
+              [name]="preenchida ? 'star' : 'star-outline'"
+              [color]="preenchida ? 'warning' : 'medium'"
+              size="small">
+            </ion-icon>
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-card-content *ngIf="atividade.critica">
+        <ion-text color="medium">
+          <p class="critica-text">{{ atividade.critica }}</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Mensagem quando não há atividades -->
+    <ion-card *ngIf="atividades_amigos.length === 0">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="people-outline" size="large" color="medium"></ion-icon>
+        <p>
+          <ion-text color="medium">
+            <strong>Nenhuma atividade recente</strong>
+          </ion-text>
+        </p>
+        <p>
+          <ion-text color="medium">
+            <small>Adicione amigos para ver suas atividades!</small>
+          </ion-text>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

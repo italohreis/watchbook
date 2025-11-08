@@ -86,7 +86,7 @@ export class LoginPage implements OnInit {
           
           // Finaliza autenticação e redireciona para interface inicial
           loading.dismiss();
-          this.controle_navegacao.navigateRoot('/tabs/tab1');
+          this.controle_navegacao.navigateRoot('/tabs/inicio');
         }
         else {
           // Finaliza autenticação e apresenta mensagem de erro

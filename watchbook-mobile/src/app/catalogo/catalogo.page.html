@@ -1,0 +1,115 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>WatchBook</ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="light">
+    <ion-title size="small" class="section-title">Catálogo</ion-title>
+  </ion-toolbar>
+
+  <!-- Barra de Pesquisa -->
+  <ion-toolbar color="light" class="search-toolbar">
+    <ion-searchbar 
+      [(ngModel)]="termo_busca"
+      (ionInput)="buscarObra($event)"
+      (ionClear)="limparBusca()"
+      placeholder="Buscar obras por título..."
+      animated="true"
+      show-clear-button="focus">
+    </ion-searchbar>
+  </ion-toolbar>
+
+  <!-- Filtros por tipo -->
+  <ion-toolbar color="light" class="filter-toolbar">
+    <ion-segment 
+      [(ngModel)]="tipo_filtro" 
+      (ionChange)="filtrarPorTipo($event)"
+      value="todos">
+      <ion-segment-button value="todos">
+        <ion-icon name="grid-outline"></ion-icon>
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="filme">
+        <ion-icon name="film-outline"></ion-icon>
+        <ion-label>Filmes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="serie">
+        <ion-icon name="tv-outline"></ion-icon>
+        <ion-label>Séries</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  
+  <!-- Mensagem quando há busca ativa -->
+  <div *ngIf="termo_busca" class="ion-padding-bottom">
+    <ion-text color="medium">
+      <p class="ion-text-center">
+        <small>Mostrando resultados para: <strong>"{{ termo_busca }}"</strong></small>
+      </p>
+    </ion-text>
+  </div>
+
+  <!-- Grid de Obras -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let obra of lista_obras">
+        <ion-card class="obra-card">
+          <ion-row class="ion-no-padding">
+            <ion-col size="4" class="ion-no-padding">
+              <ion-thumbnail class="poster-thumbnail">
+                <img 
+                  [src]="obterUrlPoster(obra.poster)" 
+                  [alt]="'Poster de ' + obra.titulo"
+                  (error)="$any($event.target).src='assets/placeholder-poster.png'"/>
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="8">
+              <ion-card-header>
+                <ion-card-title class="obra-titulo">{{ obra.titulo }}</ion-card-title>
+                <ion-card-subtitle>
+                  <ion-icon name="calendar-outline" size="small"></ion-icon>
+                  {{ obra.ano_lancamento }}
+                </ion-card-subtitle>
+                <ion-card-subtitle *ngIf="obra.diretor">
+                  <ion-icon name="person-outline" size="small"></ion-icon>
+                  {{ obra.diretor }}
+                </ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-card-content>
+                <ion-badge color="primary">{{ obra.genero }}</ion-badge>
+                <ion-badge color="secondary" class="ion-margin-start">
+                  {{ obra.tipo_display }}
+                </ion-badge>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Mensagem quando não há obras -->
+    <ion-row *ngIf="lista_obras.length === 0">
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-content class="ion-text-center">
+            <ion-icon name="film-outline" size="large" color="medium"></ion-icon>
+            <p>
+              <ion-text color="medium">
+                <strong>Nenhuma obra encontrada</strong>
+              </ion-text>
+            </p>
+            <p *ngIf="termo_busca">
+              <ion-text color="medium">
+                <small>Tente buscar por outro termo</small>
+              </ion-text>
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
