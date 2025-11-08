@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import Login, Logout, Inicio, LoginAPI
 
 urlpatterns = [
@@ -34,3 +36,6 @@ urlpatterns = [
     path('api/login/', LoginAPI.as_view(), name='api-login'),
     path('api/', include('usuarios.api_urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
