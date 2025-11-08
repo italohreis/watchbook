@@ -35,6 +35,8 @@ urlpatterns = [
     # API 
     path('api/login/', LoginAPI.as_view(), name='api-login'),
     path('api/', include('usuarios.api_urls')),
+    path('api/catalogo/', include('catalogo.api_urls')),
+    path('api/amizades/', include('amizade.api_urls')),
 ]
 
 if settings.DEBUG:
