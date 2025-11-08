@@ -11,6 +11,10 @@ from amizade.models import Amizade
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from usuarios.serializers import RegistroAssistidoSerializer
 
 class Login(View):
     def get(self, request):
@@ -94,4 +98,60 @@ class LoginAPI(ObtainAuthToken):
             'username': user.username,
             'email': user.email,
             'token': token.key
+        })
+
+
+class LogoutAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        """
+        POST /api/logout/
+        Remove o token do usuário autenticado
+        """
+        try:
+            request.user.auth_token.delete()
+            return Response({'mensagem': 'Logout realizado com sucesso.'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'erro': 'Erro ao realizar logout.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class InicioAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """
+        GET /api/inicio/
+        Retorna feed do usuário com atividades dos amigos e estatísticas
+        """
+        user = request.user
+        
+        total_obras = RegistroAssistido.objects.filter(usuario=user).count()
+        
+        amizades = Amizade.objects.filter(
+            Q(de_usuario=user, status='ACEITO') | 
+            Q(para_usuario=user, status='ACEITO')
+        )
+        
+        amigos_ids = []
+        for amizade in amizades:
+            if amizade.de_usuario == user:
+                amigos_ids.append(amizade.para_usuario.id)
+            else:
+                amigos_ids.append(amizade.de_usuario.id)
+        
+        limit = int(request.query_params.get('limit', 10))
+        atividades_amigos = RegistroAssistido.objects.filter(
+            usuario__id__in=amigos_ids
+        ).select_related('usuario', 'obra').order_by('-data_assistido')[:limit]
+        
+        meus_registros = RegistroAssistido.objects.filter(
+            usuario=user
+        ).select_related('obra').order_by('-data_assistido')[:5]
+        
+        return Response({
+            'total_obras': total_obras,
+            'total_amigos': len(amigos_ids),
+            'atividades_amigos': RegistroAssistidoSerializer(atividades_amigos, many=True).data,
+            'meus_registros_recentes': RegistroAssistidoSerializer(meus_registros, many=True).data,
         })

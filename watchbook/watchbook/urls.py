@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import Login, Logout, Inicio, LoginAPI
+from .views import Login, Logout, Inicio, LoginAPI, LogoutAPI, InicioAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +34,8 @@ urlpatterns = [
 
     # API 
     path('api/login/', LoginAPI.as_view(), name='api-login'),
+    path('api/logout/', LogoutAPI.as_view(), name='api-logout'),
+    path('api/inicio/', InicioAPI.as_view(), name='api-inicio'),
     path('api/', include('usuarios.api_urls')),
     path('api/catalogo/', include('catalogo.api_urls')),
     path('api/amizades/', include('amizade.api_urls')),
