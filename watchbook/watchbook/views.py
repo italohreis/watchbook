@@ -95,8 +95,8 @@ class LoginAPI(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'id': user.id,
+            'first_name': user.first_name,
             'username': user.username,
-            'email': user.email,
             'token': token.key
         })
 

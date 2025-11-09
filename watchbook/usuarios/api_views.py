@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.filters import SearchFilter
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -17,7 +18,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     ViewSet para usuários
     
     Endpoints:
-    - GET /api/usuarios/ - listar usuários
+    - GET /api/usuarios/ - listar usuários (com busca ?search=nome)
     - POST /api/usuarios/ - criar usuário (cadastro)
     - GET /api/usuarios/{id}/ - detalhe de um usuário
     - GET /api/usuarios/me/ - dados do usuário autenticado
@@ -27,6 +28,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['username', 'first_name', 'last_name']
     
     def get_permissions(self):
         """Permite cadastro sem autenticação"""

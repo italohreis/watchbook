@@ -1,0 +1,129 @@
+.card-pedidos,
+.card-busca,
+.card-amigos {
+  margin: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  
+  ion-icon {
+    font-size: 1.5rem;
+  }
+
+  ion-badge {
+    margin-left: auto;
+  }
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 70px;
+
+  ion-label {
+    h2 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 0.85rem;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.search-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+
+  ion-searchbar {
+    flex: 1;
+    padding: 0;
+  }
+
+  ion-button {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    height: 40px;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: var(--ion-color-light);
+  margin: 16px 0;
+}
+
+.resultado-titulo {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+  margin-bottom: 12px;
+}
+
+ion-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+
+  ion-icon {
+    font-size: 1rem;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+}
+
+ion-buttons {
+  gap: 4px;
+}
+
+// Responsividade
+@media (max-width: 576px) {
+  .card-pedidos,
+  .card-busca,
+  .card-amigos {
+    margin: 8px;
+  }
+
+  ion-card-title {
+    font-size: 1rem;
+  }
+
+  .search-container {
+    flex-direction: column;
+    
+    ion-searchbar {
+      width: 100%;
+    }
+
+    ion-button {
+      width: 100%;
+    }
+  }
+}

@@ -114,13 +114,13 @@ export class CatalogoPage implements OnInit {
 
     if (registro) {
       this.usuario = Object.assign(new Usuario(), registro);
-      this.consultarObrasSistemaWeb();
+      this.consultarObrasSistema();
     } else {
       this.controle_navegacao.navigateRoot('/login');
     }
   }
 
-  async consultarObrasSistemaWeb() {
+  async consultarObrasSistema() {
     // Inicializa interface com efeito de carregamento
     const loading = await this.controle_carregamento.create({
       message: 'Pesquisando obras...',
@@ -176,19 +176,16 @@ export class CatalogoPage implements OnInit {
 
   async filtrarPorTipo(event: any) {
     this.tipo_filtro = event;
-    this.consultarObrasSistemaWeb();
+    this.consultarObrasSistema();
   }
 
-  async buscarObra(event: any) {
-    this.termo_busca = event.target.value;
-    if (this.termo_busca.length >= 3 || this.termo_busca.length === 0) {
-      this.consultarObrasSistemaWeb();
-    }
+  async buscarObra() {
+    this.consultarObrasSistema();
   }
 
   async limparBusca() {
     this.termo_busca = '';
-    this.consultarObrasSistemaWeb();
+    this.consultarObrasSistema();
   }
 
   async abrirModalAdicionar(obra: Obra) {

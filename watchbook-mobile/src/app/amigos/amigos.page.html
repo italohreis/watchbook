@@ -1,0 +1,176 @@
+<app-header pageTitle="Amigos"></app-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="atualizar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Pedidos Pendentes -->
+  <ion-card *ngIf="pedidos_pendentes.length > 0" class="card-pedidos">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="time-outline" color="warning"></ion-icon>
+        Pedidos Pendentes
+        <ion-badge color="warning">{{ pedidos_pendentes.length }}</ion-badge>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding">
+      <ion-list>
+        <ion-item *ngFor="let pedido of pedidos_pendentes" lines="full">
+          <ion-label>
+            <h2><strong>{{ pedido.de_usuario.username }}</strong></h2>
+            <p *ngIf="pedido.de_usuario.first_name">{{ pedido.de_usuario.first_name }}</p>
+            <p class="ion-text-wrap">
+              <small>quer ser seu amigo(a)</small>
+            </p>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button 
+              (click)="aceitarPedido(pedido.id)" 
+              color="success" 
+              fill="solid"
+              size="small">
+              <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+            </ion-button>
+            <ion-button 
+              (click)="rejeitarPedido(pedido.id)" 
+              color="danger" 
+              fill="solid"
+              size="small">
+              <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Buscar Usuários -->
+  <ion-card class="card-busca">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="search-outline" color="primary"></ion-icon>
+        Encontrar Usuários
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="ion-text-wrap">
+        <ion-text color="medium">
+          <small>Busque outros usuários pelo nome ou username</small>
+        </ion-text>
+      </p>
+      
+      <div class="search-container">
+        <ion-searchbar 
+          [(ngModel)]="termo_busca"
+          (keyup.enter)="buscarUsuarios()"
+          placeholder="Buscar por nome de usuário..."
+          animated="true">
+        </ion-searchbar>
+        <ion-button 
+          (click)="buscarUsuarios()" 
+          color="primary">
+          <ion-icon slot="start" name="search-outline"></ion-icon>
+          Buscar
+        </ion-button>
+      </div>
+
+      <!-- Resultados da Busca -->
+      <div *ngIf="mostrar_resultados">
+        <div class="divider"></div>
+        <h3 class="resultado-titulo">
+          Resultados para "{{ termo_busca }}"
+        </h3>
+        
+        <ion-list *ngIf="usuarios_busca.length > 0">
+          <ion-item *ngFor="let usuario of usuarios_busca" lines="full">
+            <ion-label>
+              <h2><strong>{{ usuario.username }}</strong></h2>
+              <p *ngIf="usuario.first_name">{{ usuario.first_name }}</p>
+            </ion-label>
+            
+            <!-- Já é amigo -->
+            <ion-badge 
+              *ngIf="verificarStatusAmizade(usuario.id) === 'ACEITO'" 
+              color="success" 
+              slot="end">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              Amigos
+            </ion-badge>
+            
+            <!-- Pedido pendente enviado -->
+            <ion-badge 
+              *ngIf="verificarStatusAmizade(usuario.id) === 'PENDENTE_ENVIADO'" 
+              color="warning" 
+              slot="end">
+              <ion-icon name="time-outline"></ion-icon>
+              Pendente
+            </ion-badge>
+            
+            <!-- Pode adicionar -->
+            <ion-button 
+              *ngIf="verificarStatusAmizade(usuario.id) === 'NENHUM'"
+              (click)="enviarPedido(usuario.id)" 
+              color="primary" 
+              fill="solid"
+              size="small"
+              slot="end">
+              <ion-icon slot="start" name="person-add-outline"></ion-icon>
+              Adicionar
+            </ion-button>
+          </ion-item>
+        </ion-list>
+
+        <ion-card *ngIf="usuarios_busca.length === 0">
+          <ion-card-content class="ion-text-center">
+            <ion-text color="medium">
+              <p>Nenhum usuário encontrado</p>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de Amigos -->
+  <ion-card class="card-amigos">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="people-outline" color="primary"></ion-icon>
+        Meus Amigos
+        <ion-badge *ngIf="amigos.length > 0" color="primary">{{ amigos.length }}</ion-badge>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding">
+      <ion-list *ngIf="amigos.length > 0">
+        <ion-item *ngFor="let amizade of amigos" lines="full">
+          <ion-icon name="person-circle" slot="start" color="primary" size="large"></ion-icon>
+          <ion-label>
+            <h2><strong>{{ obterUsernameAmigo(amizade) }}</strong></h2>
+            <p>{{ obterNomeAmigo(amizade) }}</p>
+          </ion-label>
+          <ion-button 
+            (click)="confirmarRemoverAmigo(amizade)" 
+            color="danger" 
+            fill="outline"
+            size="small"
+            slot="end">
+            <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <div *ngIf="amigos.length === 0" class="empty-state">
+        <ion-icon name="people-outline" color="medium" size="large"></ion-icon>
+        <p>
+          <ion-text color="medium">
+            Você ainda não tem amigos adicionados.<br>
+            Use a busca acima para encontrar pessoas!
+          </ion-text>
+        </p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

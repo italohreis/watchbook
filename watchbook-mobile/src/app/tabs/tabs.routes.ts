@@ -22,6 +22,11 @@ export const routes: Routes = [
           import('../registros/registros.page').then((m) => m.RegistrosPage),
       },
       {
+        path: 'amigos',
+        loadComponent: () =>
+          import('../amigos/amigos.page').then((m) => m.AmigosPage),
+      },
+      {
         path: 'perfil',
         loadComponent: () =>
           import('../perfil/perfil.page').then((m) => m.PerfilPage),

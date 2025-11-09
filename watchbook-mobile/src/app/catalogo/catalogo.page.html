@@ -6,12 +6,19 @@
   <div class="search-container">
     <ion-searchbar 
       [(ngModel)]="termo_busca"
-      (ionInput)="buscarObra($event)"
+      (keyup.enter)="buscarObra()"
       (ionClear)="limparBusca()"
       placeholder="Buscar obras por título..."
       animated="true"
       show-clear-button="focus">
     </ion-searchbar>
+    <ion-button 
+      (click)="buscarObra()" 
+      color="primary"
+      class="btn-pesquisar">
+      <ion-icon slot="start" name="search-outline"></ion-icon>
+      Buscar
+    </ion-button>
   </div>
 
   <!-- Filtros por tipo -->
@@ -19,15 +26,6 @@
     [(value)]="tipo_filtro"
     (valueChange)="filtrarPorTipo($event)">
   </app-tipo-filter>
-
-  <!-- Mensagem quando há busca ativa -->
-  <div *ngIf="termo_busca" class="ion-padding-horizontal ion-padding-bottom">
-    <ion-text color="medium">
-      <p class="ion-text-center">
-        <small>Mostrando resultados para: <strong>"{{ termo_busca }}"</strong></small>
-      </p>
-    </ion-text>
-  </div>
 
   <!-- Grid de Obras -->
   <ion-grid class="ion-padding">

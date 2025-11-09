@@ -1,6 +1,22 @@
 .search-container {
   padding: 12px;
   background: var(--ion-color-light);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  ion-searchbar {
+    flex: 1;
+    padding: 0;
+  }
+
+  .btn-pesquisar {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    height: 40px;
+    margin: 0;
+    font-size: 0.9rem;
+  }
 }
 
 .obra-card {

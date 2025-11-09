@@ -8,13 +8,13 @@
       <ion-avatar class="avatar-grande">
         <ion-icon name="person-outline" size="large"></ion-icon>
       </ion-avatar>
-      <ion-card-title>{{ usuario.nome || 'Usuário' }}</ion-card-title>
+      <ion-card-title>{{ usuario.first_name || 'Usuário' }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list lines="none">
         <ion-item>
           <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
-          <ion-label>{{ usuario.email }}</ion-label>
+          <ion-label>{{ usuario.username }}</ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
