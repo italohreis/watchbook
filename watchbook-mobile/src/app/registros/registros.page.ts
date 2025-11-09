@@ -37,6 +37,7 @@ import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { ModalEditarRegistroComponent } from './modal-editar-registro/modal-editar-registro.component';
 import { TipoFilterComponent } from '../components/tipo-filter/tipo-filter.component';
+import { environment } from '../../environments/environment';
 import { addIcons } from 'ionicons';
 import {
   starOutline,
@@ -153,7 +154,7 @@ export class RegistrosPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: 'http://127.0.0.1:8000/api/registros/'
+      url: `${environment.apiUrl}/registros/`
     };
 
     CapacitorHttp.get(options)
@@ -223,7 +224,7 @@ export class RegistrosPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: `http://127.0.0.1:8000/api/registros/${id}/`
+      url: `${environment.apiUrl}/registros/${id}/`
     };
 
     CapacitorHttp.delete(options)
@@ -272,7 +273,7 @@ export class RegistrosPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: `http://127.0.0.1:8000/api/registros/${id}/`,
+      url: `${environment.apiUrl}/registros/${id}/`,
       data: dados
     };
 
@@ -306,7 +307,7 @@ export class RegistrosPage implements OnInit {
     if (poster && poster.startsWith('http')) {
       return poster;
     } else if (poster) {
-      return `http://127.0.0.1:8000${poster}`;
+      return `${environment.apiUrl.replace('/api', '')}${poster}`;
     }
     return 'assets/placeholder-poster.png';
   }

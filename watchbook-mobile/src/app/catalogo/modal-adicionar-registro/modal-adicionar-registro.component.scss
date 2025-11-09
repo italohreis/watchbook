@@ -1,0 +1,78 @@
+.obra-info {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+}
+
+.avaliacao-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+
+  h3 {
+    margin: 0 0 1rem;
+    color: var(--ion-color-dark);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .estrelas-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+
+    .estrela-clickable {
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .nota-texto {
+    margin: 0.5rem 0 0;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 1rem;
+
+  ion-label[position="stacked"] {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+}
+
+ion-button {
+  --border-radius: 8px;
+  height: 50px;
+  font-weight: 600;
+}

@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Marcar como Assistido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="obra-info" *ngIf="obra">
+    <h2>{{ obra.titulo }}</h2>
+    <p>{{ obra.ano_lancamento }} • {{ obra.diretor }}</p>
+  </div>
+
+  <!-- Avaliação com Estrelas -->
+  <div class="avaliacao-section">
+    <ion-label>
+      <h3>Sua Avaliação</h3>
+    </ion-label>
+    <div class="estrelas-selector">
+      <ion-icon
+        *ngFor="let estrela of gerarEstrelas()"
+        [name]="estrela <= nota ? 'star' : 'star-outline'"
+        [color]="estrela <= nota ? 'warning' : 'medium'"
+        (click)="selecionarNota(estrela)"
+        class="estrela-clickable">
+      </ion-icon>
+    </div>
+    <p class="nota-texto">{{ nota > 0 ? nota + ' estrela' + (nota > 1 ? 's' : '') : 'Sem avaliação' }}</p>
+  </div>
+
+  <!-- Crítica -->
+  <ion-item>
+    <ion-label position="stacked">Sua Crítica (opcional)</ion-label>
+    <ion-textarea
+      [(ngModel)]="critica"
+      placeholder="Escreva sua opinião sobre a obra..."
+      [rows]="5"
+      [autoGrow]="true">
+    </ion-textarea>
+  </ion-item>
+
+  <!-- Botão Salvar -->
+  <ion-button expand="block" color="success" (click)="salvarRegistro()" class="ion-margin-top">
+    Adicionar aos Assistidos
+  </ion-button>
+</ion-content>

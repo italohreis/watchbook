@@ -9,6 +9,7 @@ import {
   LoadingController,
   NavController,
   ToastController,
+  ModalController,
   IonText,
   IonCard,
   IonCardHeader,
@@ -28,11 +29,13 @@ import {
   IonGrid
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
+import { environment } from '../../environments/environment';
 import { Obra } from './models/obra.model';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { TipoFilterComponent } from '../components/tipo-filter/tipo-filter.component';
+import { ModalAdicionarRegistroComponent } from './modal-adicionar-registro/modal-adicionar-registro.component';
 import { addIcons } from 'ionicons';
 import {
   searchOutline,
@@ -40,7 +43,8 @@ import {
   tvOutline,
   gridOutline,
   calendarOutline,
-  personOutline
+  personOutline,
+  addCircle
 } from 'ionicons/icons';
 
 @Component({
@@ -88,7 +92,8 @@ export class CatalogoPage implements OnInit {
     public storage: Storage,
     public controle_toast: ToastController,
     public controle_navegacao: NavController,
-    public controle_carregamento: LoadingController
+    public controle_carregamento: LoadingController,
+    public controle_modal: ModalController
   ) {
     // Registra os ícones
     addIcons({
@@ -97,7 +102,8 @@ export class CatalogoPage implements OnInit {
       'tv-outline': tvOutline,
       'grid-outline': gridOutline,
       'calendar-outline': calendarOutline,
-      'person-outline': personOutline
+      'person-outline': personOutline,
+      'add-circle': addCircle
     });
   }
 
@@ -123,7 +129,7 @@ export class CatalogoPage implements OnInit {
     await loading.present();
 
     // Monta a URL com filtros
-    let url = 'http://127.0.0.1:8000/api/catalogo/';
+    let url = `${environment.apiUrl}/catalogo/`;
     const params: string[] = [];
 
     if (this.tipo_filtro !== 'todos') {
@@ -185,6 +191,55 @@ export class CatalogoPage implements OnInit {
     this.consultarObrasSistemaWeb();
   }
 
+  async abrirModalAdicionar(obra: Obra) {
+    const modal = await this.controle_modal.create({
+      component: ModalAdicionarRegistroComponent,
+      componentProps: {
+        obra: obra
+      }
+    });
+
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'salvar' && data) {
+      this.adicionarRegistro(data);
+    }
+  }
+
+  async adicionarRegistro(dados: any) {
+    const loading = await this.controle_carregamento.create({
+      message: 'Adicionando aos assistidos...',
+      duration: 60000
+    });
+    await loading.present();
+
+    const options: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${this.usuario.token}`
+      },
+      url: `${environment.apiUrl}/registros/`,
+      data: dados
+    };
+
+    CapacitorHttp.post(options)
+      .then(async (resposta: HttpResponse) => {
+        loading.dismiss();
+        if (resposta.status == 201 || resposta.status == 200) {
+          this.apresenta_mensagem('Obra adicionada aos assistidos!');
+        } else {
+          this.apresenta_mensagem(`Falha ao adicionar: código ${resposta.status}`);
+        }
+      })
+      .catch(async (erro: any) => {
+        console.log(erro);
+        loading.dismiss();
+        this.apresenta_mensagem(`Falha ao adicionar: ${erro?.message || 'Erro desconhecido'}`);
+      });
+  }
+
   async apresenta_mensagem(texto: string) {
     const mensagem = await this.controle_toast.create({
       message: texto,
@@ -198,7 +253,7 @@ export class CatalogoPage implements OnInit {
     if (poster && poster.startsWith('http')) {
       return poster;
     } else if (poster) {
-      return `http://127.0.0.1:8000${poster}`;
+      return `${environment.apiUrl.replace('/api', '')}${poster}`;
     }
     return 'assets/placeholder-poster.png';
   }

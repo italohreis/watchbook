@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   IonContent,
   IonLabel,
@@ -10,7 +11,8 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle
+  IonCardTitle,
+  IonText
 } from '@ionic/angular/standalone';
 import { LoadingController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -20,6 +22,7 @@ import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { Storage } from '@ionic/storage-angular'; 
 import { Usuario } from './models/usuario.model';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -37,8 +40,10 @@ import { AppHeaderComponent } from '../components/app-header/app-header.componen
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
+    IonText,
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   providers: [Storage]
 })
@@ -71,7 +76,7 @@ export class LoginPage implements OnInit {
     // Define informações do cabeçalho da requisição
     const options: HttpOptions = {
       headers: {'Content-Type': 'application/json'},
-      url: 'http://127.0.0.1:8000/api/login/',
+      url: `${environment.apiUrl}/login/`,
       data: this.instancia
     };
 

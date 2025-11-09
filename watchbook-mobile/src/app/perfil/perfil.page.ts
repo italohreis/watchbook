@@ -25,6 +25,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
+import { environment } from '../../environments/environment';
 import { addIcons } from 'ionicons';
 import {
   personOutline,
@@ -118,7 +119,7 @@ export class PerfilPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: 'http://127.0.0.1:8000/api/usuarios/meu_perfil/'
+      url: `${environment.apiUrl}/usuarios/meu_perfil/`
     };
 
     CapacitorHttp.get(options)
@@ -154,7 +155,7 @@ export class PerfilPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: 'http://127.0.0.1:8000/api/logout/'
+      url: `${environment.apiUrl}/logout/`
     };
 
     CapacitorHttp.post(options)

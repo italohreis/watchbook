@@ -2,14 +2,14 @@ ion-content {
     --background: #f8f9fa;
 }
 
-.login-container {
+.cadastro-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100%;
 }
 
-.login-card {
+.cadastro-card {
     width: 100%;
     max-width: 400px;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -68,14 +68,14 @@ ion-content {
         font-weight: 400;
     }
 
-    .link-cadastro {
+    .link-login {
         color: var(--ion-color-primary);
         font-weight: bold;
         cursor: pointer;
         text-decoration: none;
     }
 
-    .link-cadastro:hover {
+    .link-login:hover {
         text-decoration: underline;
     }
 }

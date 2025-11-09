@@ -45,7 +45,17 @@
             </ion-col>
             <ion-col size="8">
               <ion-card-header>
-                <ion-card-title class="obra-titulo">{{ obra.titulo }}</ion-card-title>
+                <div class="titulo-row">
+                  <ion-card-title class="obra-titulo">{{ obra.titulo }}</ion-card-title>
+                  <ion-button 
+                    fill="clear" 
+                    size="small" 
+                    color="success"
+                    (click)="abrirModalAdicionar(obra)"
+                    class="btn-adicionar">
+                    <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+                  </ion-button>
+                </div>
                 <ion-card-subtitle>
                   <ion-icon name="calendar-outline" size="small"></ion-icon>
                   {{ obra.ano_lancamento }}

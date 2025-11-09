@@ -31,6 +31,7 @@ import { Registro } from './models/registro.model';
 import { Usuario } from '../login/models/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
+import { environment } from '../../environments/environment';
 import { addIcons } from 'ionicons';
 import {
   homeOutline,
@@ -126,7 +127,7 @@ export class InicioPage implements OnInit {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: 'http://127.0.0.1:8000/api/inicio/'
+      url: `${environment.apiUrl}/inicio/`
     };
 
     CapacitorHttp.get(options)
@@ -171,7 +172,7 @@ export class InicioPage implements OnInit {
     if (poster && poster.startsWith('http')) {
       return poster;
     } else if (poster) {
-      return `http://127.0.0.1:8000${poster}`;
+      return `${environment.apiUrl.replace('/api', '')}${poster}`;
     }
     return 'assets/placeholder-poster.png';
   }

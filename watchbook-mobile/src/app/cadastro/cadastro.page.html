@@ -1,0 +1,78 @@
+<!-- app header -->
+<app-header pageTitle="Cadastro"></app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="cadastro-container">
+    <ion-card class="cadastro-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Criar Conta</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (submit)="cadastrarUsuario()">
+          <div class="form-group">
+            <ion-label>Nome</ion-label>
+            <ion-item lines="none">
+              <ion-input 
+                type="text" 
+                placeholder="Digite seu nome" 
+                [(ngModel)]="primeiro_nome"
+                name="primeiro_nome"
+              ></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="form-group">
+            <ion-label>Nome de Usuário</ion-label>
+            <ion-item lines="none">
+              <ion-input 
+                type="text" 
+                placeholder="Digite seu nome de usuário" 
+                [(ngModel)]="nome_usuario"
+                name="nome_usuario"
+              ></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="form-group">
+            <ion-label>Senha</ion-label>
+            <ion-item lines="none">
+              <ion-input 
+                type="password" 
+                placeholder="Digite sua senha" 
+                [(ngModel)]="senha"
+                name="senha"
+              ></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="form-group">
+            <ion-label>Confirmar Senha</ion-label>
+            <ion-item lines="none">
+              <ion-input 
+                type="password" 
+                placeholder="Confirme sua senha" 
+                [(ngModel)]="confirmacao_senha"
+                name="confirmacao_senha"
+              ></ion-input>
+            </ion-item>
+          </div>
+
+          <ion-button expand="block" type="submit">
+            Cadastrar
+          </ion-button>
+
+          <!-- Link para Login -->
+          <div class="ion-text-center ion-margin-top">
+            <ion-text color="medium">
+              <small>
+                Já tem uma conta?
+                <a (click)="voltarParaLogin()" class="link-login">Faça login</a>
+              </small>
+            </ion-text>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
