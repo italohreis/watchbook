@@ -21,6 +21,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     - GET /api/usuarios/ - listar usuários (com busca ?search=nome)
     - POST /api/usuarios/ - criar usuário (cadastro)
     - GET /api/usuarios/{id}/ - detalhe de um usuário
+    
     - GET /api/usuarios/me/ - dados do usuário autenticado
     - GET /api/usuarios/meu_perfil/ - perfil completo do usuário autenticado
     - GET /api/usuarios/{id}/perfil/ - perfil completo de outro usuário

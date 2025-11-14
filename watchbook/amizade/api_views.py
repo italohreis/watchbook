@@ -17,6 +17,7 @@ class AmizadeViewSet(viewsets.ModelViewSet):
     - POST /api/amizades/ - enviar solicitação de amizade
     - GET /api/amizades/{id}/ - detalhe de uma amizade
     - DELETE /api/amizades/{id}/ - deletar amizade
+    
     - POST /api/amizades/{id}/aceitar/ - aceitar solicitação
     - POST /api/amizades/{id}/rejeitar/ - rejeitar solicitação
     - GET /api/amizades/pendentes/ - solicitações pendentes recebidas
