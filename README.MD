@@ -102,8 +102,8 @@ ionic serve
 
 ### Autenticação
 ```
-POST /api/auth/login/     - Login
-POST /api/auth/logout/    - Logout
+POST /api/login/          - Login (retorna token)
+POST /api/logout/         - Logout
 ```
 
 ### Usuários
@@ -118,7 +118,7 @@ GET    /api/usuarios/{id}/registros/ - Registros do usuário
 ```
 GET    /api/catalogo/              - Listar obras
 GET    /api/catalogo/{id}/         - Detalhe da obra
-GET    /api/catalogo/?tipo=filme   - Filtrar por tipo
+GET    /api/catalogo/?tipo=filme   - Filtrar por tipo (filme/serie)
 GET    /api/catalogo/?search=term  - Buscar obras
 ```
 
@@ -126,16 +126,21 @@ GET    /api/catalogo/?search=term  - Buscar obras
 ```
 GET    /api/registros/             - Meus registros
 POST   /api/registros/             - Criar registro
-PUT    /api/registros/{id}/        - Editar registro
+GET    /api/registros/{id}/        - Detalhe do registro
+PUT    /api/registros/{id}/        - Editar registro 
 DELETE /api/registros/{id}/        - Deletar registro
 ```
 
 ### Amizades
 ```
-GET    /api/amizades/              - Minhas amizades
-POST   /api/amizades/              - Enviar convite
-PUT    /api/amizades/{id}/         - Aceitar convite
-DELETE /api/amizades/{id}/         - Recusar/Remover
+GET    /api/amizades/              - Listar todas as minhas amizades
+POST   /api/amizades/              - Enviar solicitação de amizade
+GET    /api/amizades/{id}/         - Detalhe da amizade
+DELETE /api/amizades/{id}/         - Remover amizade
+POST   /api/amizades/{id}/aceitar/  - Aceitar solicitação
+POST   /api/amizades/{id}/rejeitar/ - Rejeitar solicitação
+GET    /api/amizades/pendentes/    - Solicitações pendentes (recebidas)
+GET    /api/amizades/aceitas/      - Amizades aceitas
 ```
 
 ## 📂 Estrutura
