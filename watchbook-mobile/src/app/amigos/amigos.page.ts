@@ -24,7 +24,8 @@ import {
   IonBadge,
   IonSearchbar,
   IonRefresher,
-  IonRefresherContent
+  IonRefresherContent,
+  IonAvatar
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
@@ -94,7 +95,8 @@ interface UsuarioBusca {
     IonBadge,
     IonSearchbar,
     IonRefresher,
-    IonRefresherContent
+    IonRefresherContent,
+    IonAvatar
   ],
   providers: [Storage]
 })

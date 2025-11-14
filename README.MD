@@ -54,23 +54,49 @@ ionic serve
 
 ## 📱 Funcionalidades
 
-### Web
-- ✅ Autenticação de usuários
-- ✅ Catálogo de filmes e séries
-- ✅ Busca e filtros por tipo
-- ✅ Registrar obras assistidas
-- ✅ Sistema de avaliação (estrelas)
-- ✅ Críticas pessoais
-- ✅ Gestão de amizades
-- ✅ Visualizar registros de amigos
+- **Autenticação** - Login, cadastro e logout de usuários
+- **Catálogo** - Buscar e visualizar filmes e séries
+- **Registros** - Marcar obras como assistidas com nota (estrelas) e crítica
+- **Gerenciamento** - Editar e excluir registros pessoais
+- **Filtros** - Visualizar registros por tipo (todos/filmes/séries)
+- **Amizades** - Buscar, adicionar e gerenciar amigos
+- **Social** - Aceitar/rejeitar convites e visualizar registros de amigos
 
-### Mobile
-- ✅ Login e cadastro
-- ✅ Visualizar catálogo
-- ✅ Meus registros com filtros
-- ✅ Buscar e adicionar amigos
-- ✅ Gerenciar convites (aceitar/rejeitar)
-- ✅ Ver registros de amigos
+**Disponível em:** Web (Django Templates) e Mobile (Ionic/Angular)
+
+## 🖼️ Interface
+
+### Versão Web
+
+#### Início, Catálogo e Registros
+<p align="center">
+  <img src="docs/images/web/inicio.png" width="49%" alt="Catálogo de Obras">
+  <img src="docs/images/web/catalogo.png" width="49%" alt="Catálogo de Obras">
+  <img src="docs/images/web/registros.png" width="49%" alt="Meus Registros">
+</p>
+
+#### Amizades e Perfil
+<p align="center">
+  <img src="docs/images/web/amigos.png" width="49%" alt="Gerenciar Amigos">
+  <img src="docs/images/web/perfil.png" width="49%" alt="Perfil do Usuário">
+</p>
+
+---
+
+### Versão Mobile
+
+#### Navegação Principal
+<p align="center">
+  <img src="docs/images/mobile/catalogo.png" width="30%" alt="Catálogo">
+  <img src="docs/images/mobile/registros.png" width="30%" alt="Meus Registros">
+  <img src="docs/images/mobile/perfil.png" width="30%" alt="Perfil">
+</p>
+
+#### Funcionalidades Sociais
+<p align="center">
+  <img src="docs/images/mobile/amigos.png" width="30%" alt="Amigos">
+  <img src="docs/images/mobile/perfil.png" width="30%" alt="Buscar Amigos">
+</p>
 
 ## 🔌 API Endpoints
 

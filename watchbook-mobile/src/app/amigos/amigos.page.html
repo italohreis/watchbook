@@ -145,7 +145,9 @@
     <ion-card-content class="ion-no-padding">
       <ion-list *ngIf="amigos.length > 0">
         <ion-item *ngFor="let amizade of amigos" lines="full">
-          <ion-icon name="person-circle" slot="start" color="primary" size="large"></ion-icon>
+          <ion-avatar slot="start">
+            <ion-icon name="person-outline" size="large"></ion-icon>
+          </ion-avatar>
           <ion-label>
             <h2><strong>{{ obterUsernameAmigo(amizade) }}</strong></h2>
             <p>{{ obterNomeAmigo(amizade) }}</p>
