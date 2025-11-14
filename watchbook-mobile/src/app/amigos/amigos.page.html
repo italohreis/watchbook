@@ -154,6 +154,13 @@
           </ion-label>
           <ion-buttons slot="end">
             <ion-button 
+              (click)="verPerfilAmigo(amizade)" 
+              color="secondary" 
+              fill="outline"
+              size="small">
+              <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+            </ion-button>
+            <ion-button 
               (click)="verRegistrosAmigo(amizade)" 
               color="primary" 
               fill="outline"

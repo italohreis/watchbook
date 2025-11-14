@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -19,7 +20,8 @@ import {
   IonLabel,
   IonIcon,
   IonButton,
-  IonAvatar
+  IonAvatar,
+  IonThumbnail
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
@@ -29,12 +31,45 @@ import { environment } from '../../environments/environment';
 import { addIcons } from 'ionicons';
 import {
   personOutline,
-  mailOutline,
+  atOutline,
   filmOutline,
   peopleOutline,
-  starOutline,
-  logOutOutline
+  star,
+  heart,
+  videocamOutline,
+  tvOutline,
+  barChartOutline,
+  logOutOutline,
+  listOutline,
+  timeOutline
 } from 'ionicons/icons';
+
+interface Registro {
+  id: number;
+  obra: {
+    id: number;
+    titulo: string;
+    poster: string;
+    tipo: string;
+    genero: string;
+    ano_lancamento: number;
+    diretor: string;
+  };
+  nota: number;
+  critica: string;
+  data_assistido: string;
+}
+
+interface PerfilData {
+  id?: number;
+  username?: string;
+  total_obras: number;
+  total_filmes: number;
+  total_series: number;
+  genero_favorito: string | null;
+  nota_media: number | null;
+  total_amigos: number;
+}
 
 @Component({
   standalone: true,
@@ -58,6 +93,8 @@ import {
     IonTitle,
     IonToolbar,
     IonIcon,
+    IonThumbnail,
+    RouterLink,
     CommonModule,
     FormsModule
   ],
@@ -66,7 +103,8 @@ import {
 export class PerfilPage implements OnInit {
 
   public usuario: Usuario = new Usuario();
-  public perfil = {
+  public usuario_id: number | null = null; // ID do usuário sendo visualizado (null = próprio perfil)
+  public perfil: PerfilData = {
     total_obras: 0,
     total_filmes: 0,
     total_series: 0,
@@ -74,21 +112,29 @@ export class PerfilPage implements OnInit {
     nota_media: 0,
     total_amigos: 0
   };
+  public registros_recentes: Registro[] = [];
 
   constructor(
     public storage: Storage,
     public controle_toast: ToastController,
     public controle_navegacao: NavController,
-    public controle_carregamento: LoadingController
+    public controle_carregamento: LoadingController,
+    private route: ActivatedRoute
   ) {
     // Registra os ícones
     addIcons({
       'person-outline': personOutline,
-      'mail-outline': mailOutline,
+      'at-outline': atOutline,
       'film-outline': filmOutline,
       'people-outline': peopleOutline,
-      'star-outline': starOutline,
-      'log-out-outline': logOutOutline
+      'star': star,
+      'heart': heart,
+      'videocam-outline': videocamOutline,
+      'tv-outline': tvOutline,
+      'bar-chart-outline': barChartOutline,
+      'log-out-outline': logOutOutline,
+      'list-outline': listOutline,
+      'time-outline': timeOutline
     });
   }
 
@@ -99,10 +145,30 @@ export class PerfilPage implements OnInit {
 
     if (registro) {
       this.usuario = Object.assign(new Usuario(), registro);
-      this.carregarPerfil();
+      
+      // Verifica se há um ID na rota (visualizando outro usuário)
+      this.route.params.subscribe(params => {
+        if (params['id']) {
+          this.usuario_id = +params['id'];
+        }
+        this.carregarPerfil();
+      });
     } else {
       this.controle_navegacao.navigateRoot('/login');
     }
+  }
+
+  // Retorna true se está visualizando o próprio perfil
+  get isPerfilProprio(): boolean {
+    return this.usuario_id === null;
+  }
+
+  // Retorna o título da página
+  get pageTitle(): string {
+    if (this.isPerfilProprio) {
+      return 'Perfil';
+    }
+    return this.perfil.username ? `@${this.perfil.username}` : 'Perfil';
   }
 
   async carregarPerfil() {
@@ -113,25 +179,28 @@ export class PerfilPage implements OnInit {
     });
     await loading.present();
 
+    // Define a URL com base em qual perfil está sendo visualizado
+    const url = this.isPerfilProprio 
+      ? `${environment.apiUrl}/usuarios/meu_perfil/`
+      : `${environment.apiUrl}/usuarios/${this.usuario_id}/perfil/`;
+
     // Define informações do cabeçalho da requisição
     const options: HttpOptions = {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Token ${this.usuario.token}`
       },
-      url: `${environment.apiUrl}/usuarios/meu_perfil/`
+      url: url
     };
 
     CapacitorHttp.get(options)
       .then(async (resposta: HttpResponse) => {
         // Verifica se a requisição foi processada com sucesso
         if (resposta.status == 200) {
-          this.perfil.total_obras = resposta.data.total_obras;
-          this.perfil.total_filmes = resposta.data.total_filmes;
-          this.perfil.total_series = resposta.data.total_series;
-          this.perfil.genero_favorito = resposta.data.genero_favorito;
-          this.perfil.nota_media = resposta.data.nota_media;
-          this.perfil.total_amigos = resposta.data.total_amigos;
+          this.perfil = resposta.data;
+
+          // Carrega registros recentes
+          this.carregarRegistrosRecentes();
 
           // Finaliza interface com efeito de carregamento
           loading.dismiss();
@@ -146,6 +215,52 @@ export class PerfilPage implements OnInit {
         loading.dismiss();
         this.apresenta_mensagem(`Falha ao carregar perfil: código ${erro?.status}`);
       });
+  }
+
+  async carregarRegistrosRecentes() {
+    // Define a URL com base em qual perfil está sendo visualizado
+    const url = this.isPerfilProprio
+      ? `${environment.apiUrl}/registros/?limit=5`
+      : `${environment.apiUrl}/usuarios/${this.usuario_id}/registros/`;
+
+    const options: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${this.usuario.token}`
+      },
+      url: url
+    };
+
+    CapacitorHttp.get(options)
+      .then((resposta: HttpResponse) => {
+        if (resposta.status == 200) {
+          this.registros_recentes = resposta.data.slice(0, 5);
+        }
+      })
+      .catch((erro: any) => {
+        console.log('Erro ao carregar registros recentes:', erro);
+      });
+  }
+
+  gerarEstrelas(nota: number): boolean[] {
+    return Array(5).fill(false).map((_, i) => i < nota);
+  }
+
+  obterUrlPoster(poster: string | undefined): string {
+    if (poster && poster.startsWith('http')) {
+      return poster;
+    } else if (poster) {
+      return `${environment.apiUrl.replace('/api', '')}${poster}`;
+    }
+    return 'assets/placeholder-poster.png';
+  }
+
+  verRegistros() {
+    if (!this.isPerfilProprio && this.perfil.id && this.perfil.username) {
+      this.controle_navegacao.navigateForward(`/registros-usuario/${this.perfil.id}`, {
+        state: { username: this.perfil.username }
+      });
+    }
   }
 
   async sair() {

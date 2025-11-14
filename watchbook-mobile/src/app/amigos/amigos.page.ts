@@ -436,6 +436,14 @@ export class AmigosPage implements OnInit {
     return 'NENHUM';
   }
 
+  verPerfilAmigo(amizade: Amizade) {
+    const usuario_id = amizade.de_usuario.id === this.usuario.id 
+      ? amizade.para_usuario.id 
+      : amizade.de_usuario.id;
+
+    this.controle_navegacao.navigateForward(`/perfil/${usuario_id}`);
+  }
+
   verRegistrosAmigo(amizade: Amizade) {
     const usuario_id = amizade.de_usuario.id === this.usuario.id 
       ? amizade.para_usuario.id 

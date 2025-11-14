@@ -136,9 +136,10 @@ export class RegistrosUsuarioPage implements OnInit {
       // Pega o username do state
       const navigation = this.router.getCurrentNavigation();
       if (navigation?.extras?.state) {
-        this.username = navigation.extras.state['username'] || 'Usuário';
+        this.username = navigation.extras.state['username'] || '';
       }
 
+      // Carrega os registros (e busca o username se necessário)
       this.carregarRegistros();
     } else {
       this.controle_navegacao.navigateRoot('/login');
@@ -151,6 +152,10 @@ export class RegistrosUsuarioPage implements OnInit {
       duration: 60000
     });
     await loading.present();
+
+    if (!this.username) {
+      await this.buscarUsername();
+    }
 
     let url = `${environment.apiUrl}/usuarios/${this.usuario_id}/registros/`;
     
@@ -180,6 +185,26 @@ export class RegistrosUsuarioPage implements OnInit {
         loading.dismiss();
         this.apresenta_mensagem('Erro ao carregar registros');
       });
+  }
+
+  async buscarUsername() {
+    const options: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${this.usuario.token}`
+      },
+      url: `${environment.apiUrl}/usuarios/${this.usuario_id}/perfil/`
+    };
+
+    try {
+      const resposta: HttpResponse = await CapacitorHttp.get(options);
+      if (resposta.status == 200 && resposta.data.username) {
+        this.username = resposta.data.username;
+      }
+    } catch (erro) {
+      console.log('Erro ao buscar username:', erro);
+      this.username = 'Usuário';
+    }
   }
 
   filtrarPorTipo(tipo: string) {
