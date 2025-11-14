@@ -87,9 +87,9 @@ ionic serve
 
 #### Navegação Principal
 <p align="center">
+  <img src="docs/images/mobile/inicio.png" width="30%" alt="Ínicio">
   <img src="docs/images/mobile/catalogo.png" width="30%" alt="Catálogo">
   <img src="docs/images/mobile/registros.png" width="30%" alt="Meus Registros">
-  <img src="docs/images/mobile/perfil.png" width="30%" alt="Perfil">
 </p>
 
 #### Funcionalidades Sociais
