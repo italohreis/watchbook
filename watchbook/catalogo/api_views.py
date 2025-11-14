@@ -12,26 +12,24 @@ class ObraViewSet(viewsets.ModelViewSet):
     
     Endpoints:
     - GET /api/catalogo/ - listar obras (com busca e filtros)
-    - POST /api/catalogo/ - criar nova obra (apenas admin)
+    - POST /api/catalogo/ - criar nova obra 
     - GET /api/catalogo/{id}/ - detalhe de uma obra
-    - PUT/PATCH /api/catalogo/{id}/ - atualizar obra (apenas admin)
-    - DELETE /api/catalogo/{id}/ - deletar obra (apenas admin)
+    - PUT/PATCH /api/catalogo/{id}/ - atualizar obra 
+    - DELETE /api/catalogo/{id}/ - deletar obra 
     """
     queryset = Obra.objects.all()
     serializer_class = ObraSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['titulo', 'diretor', 'genero']
-    ordering_fields = ['titulo', 'ano_lancamento', 'id']
-    ordering = ['-id']
+    ordering_fields = ['titulo']
+    ordering = ['titulo']
     
     def get_permissions(self):
         """
         Leitura permite qualquer um autenticado
-        Criação, atualização e deleção apenas para admin
         """
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [IsAdminUser()]
-        return [IsAuthenticated()]
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated()]
     
     def get_queryset(self):
         """

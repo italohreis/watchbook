@@ -150,14 +150,22 @@
             <h2><strong>{{ obterUsernameAmigo(amizade) }}</strong></h2>
             <p>{{ obterNomeAmigo(amizade) }}</p>
           </ion-label>
-          <ion-button 
-            (click)="confirmarRemoverAmigo(amizade)" 
-            color="danger" 
-            fill="outline"
-            size="small"
-            slot="end">
-            <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
-          </ion-button>
+          <ion-buttons slot="end">
+            <ion-button 
+              (click)="verRegistrosAmigo(amizade)" 
+              color="primary" 
+              fill="outline"
+              size="small">
+              <ion-icon slot="icon-only" name="list-outline"></ion-icon>
+            </ion-button>
+            <ion-button 
+              (click)="confirmarRemoverAmigo(amizade)" 
+              color="danger" 
+              fill="outline"
+              size="small">
+              <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-item>
       </ion-list>
 

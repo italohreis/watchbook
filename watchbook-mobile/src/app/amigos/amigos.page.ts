@@ -39,7 +39,8 @@ import {
   checkmarkCircle,
   closeCircle,
   timeOutline,
-  peopleOutline
+  peopleOutline,
+  listOutline
 } from 'ionicons/icons';
 
 interface Amizade {
@@ -120,7 +121,8 @@ export class AmigosPage implements OnInit {
       checkmarkCircle,
       closeCircle,
       timeOutline,
-      peopleOutline
+      peopleOutline,
+      listOutline
     });
   }
 
@@ -340,7 +342,7 @@ export class AmigosPage implements OnInit {
 
     const alert = await this.controle_alerta.create({
       header: 'Confirmar Remoção',
-      message: `Deseja remover <strong>${amigo.username}</strong> da sua lista de amigos?`,
+      message: `Deseja remover ${amigo.username} da sua lista de amigos?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -430,6 +432,20 @@ export class AmigosPage implements OnInit {
     if (pedidoRecebido) return 'PENDENTE_RECEBIDO';
 
     return 'NENHUM';
+  }
+
+  verRegistrosAmigo(amizade: Amizade) {
+    const usuario_id = amizade.de_usuario.id === this.usuario.id 
+      ? amizade.para_usuario.id 
+      : amizade.de_usuario.id;
+    
+    const username = amizade.de_usuario.id === this.usuario.id 
+      ? amizade.para_usuario.username 
+      : amizade.de_usuario.username;
+
+    this.controle_navegacao.navigateForward(`/registros-usuario/${usuario_id}`, {
+      state: { username }
+    });
   }
 
   async atualizar(event: any) {

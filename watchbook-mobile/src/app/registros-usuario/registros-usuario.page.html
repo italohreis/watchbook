@@ -1,0 +1,63 @@
+<app-header 
+  [pageTitle]="'Registros de ' + username" 
+  [showBackButton]="true"
+  [defaultHref]="'/tabs/amigos'">
+</app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="atualizar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="ion-padding">
+    <app-tipo-filter 
+      [value]="tipo_filtro" 
+      (valueChange)="filtrarPorTipo($event)">
+    </app-tipo-filter>
+
+    <ion-text *ngIf="registros_filtrados.length === 0" class="ion-text-center">
+      <p>Nenhum registro encontrado.</p>
+    </ion-text>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let registro of registros_filtrados">
+          <ion-card>
+            <img [src]="obterUrlPoster(registro.obra.poster)" [alt]="registro.obra.titulo" />
+            
+            <ion-card-header>
+              <ion-card-title>{{ registro.obra.titulo }}</ion-card-title>
+              <ion-card-subtitle>
+                <ion-badge color="primary">{{ registro.obra.tipo_display }}</ion-badge>
+                <span *ngIf="registro.obra.genero"> • {{ registro.obra.genero }}</span>
+                <span *ngIf="registro.obra.ano_lancamento"> • {{ registro.obra.ano_lancamento }}</span>
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <div class="rating">
+                <ion-icon 
+                  *ngFor="let estrela of gerarEstrelas(registro.nota)" 
+                  [name]="estrela ? 'star' : 'star-outline'"
+                  [color]="estrela ? 'warning' : 'medium'">
+                </ion-icon>
+              </div>
+
+              <p *ngIf="registro.critica" class="critica">{{ registro.critica }}</p>
+
+              <div class="info-assistido">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>{{ formatarData(registro.data_assistido) }}</span>
+              </div>
+
+              <div class="info-assistido" *ngIf="registro.obra.diretor">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>{{ registro.obra.diretor }}</span>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

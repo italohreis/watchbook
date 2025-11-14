@@ -1,4 +1,4 @@
-<!-- Modal de Edição de Registro -->
+<!-- Modal de Adicionar Registro -->
 <style>
     .rating-group label { color: #ddd !important; }
     .rating-group input:checked ~ label { color: #ffc107 !important; }
@@ -9,22 +9,23 @@
     .rating-group label:hover ~ label { color: #ffc107 !important; }
 </style>
 
-<div class="modal fade" id="modalEditarRegistro{{ registro.id }}" tabindex="-1" aria-labelledby="modalEditarRegistroLabel{{ registro.id }}" aria-hidden="true">
+<div class="modal fade" id="modalAdicionarRegistro{{ obra.id }}" tabindex="-1" aria-labelledby="modalAdicionarRegistroLabel{{ obra.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarRegistroLabel{{ registro.id }}">
-                    <i class="bi bi-pencil-square me-2"></i>Editar Registro
+                <h5 class="modal-title" id="modalAdicionarRegistroLabel{{ obra.id }}">
+                    <i class="bi bi-plus-circle me-2"></i>Marcar como Assistido
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <h6 class="fw-bold">{{ registro.obra.titulo }}</h6>
-                    <p class="text-muted small mb-0">{{ registro.obra.ano_lancamento }} • {{ registro.obra.diretor }}</p>
+                    <h6 class="fw-bold">{{ obra.titulo }}</h6>
+                    <p class="text-muted small mb-0">{{ obra.ano_lancamento }} • {{ obra.diretor }}</p>
+                    <span class="badge bg-primary mt-2">{{ obra.genero }}</span>
                 </div>
                 
-                <form action="{% url 'editar-registro' registro.id %}" method="post" id="form-editar-{{ registro.id }}">
+                <form action="{% url 'registrar-assistido' obra.id %}" method="post" id="form-adicionar-{{ obra.id }}">
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -32,9 +33,9 @@
                         <div class="rating-group d-flex flex-row-reverse justify-content-end gap-1 fs-3">
                             {% for i in "54321" %}
                             <input class="visually-hidden" type="radio" name="nota" value="{{ forloop.revcounter }}" 
-                                   id="star-{{ registro.id }}-{{ forloop.revcounter }}"
-                                   {% if registro.nota == forloop.revcounter %}checked{% endif %}>
-                            <label for="star-{{ registro.id }}-{{ forloop.revcounter }}" style="cursor: pointer;">
+                                   id="star-add-{{ obra.id }}-{{ forloop.revcounter }}"
+                                   {% if forloop.revcounter == 5 %}checked{% endif %}>
+                            <label for="star-add-{{ obra.id }}-{{ forloop.revcounter }}" style="cursor: pointer;">
                                 <i class="bi bi-star-fill"></i>
                             </label>
                             {% endfor %}
@@ -43,19 +44,19 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="critica-edit-{{ registro.id }}" class="form-label fw-semibold">Crítica</label>
+                        <label for="critica-add-{{ obra.id }}" class="form-label fw-semibold">Crítica</label>
                         <textarea class="form-control" 
-                                  id="critica-edit-{{ registro.id }}" 
+                                  id="critica-add-{{ obra.id }}" 
                                   name="critica" 
                                   rows="4" 
-                                  placeholder="Escreva sua opinião sobre a obra...">{{ registro.critica|default:'' }}</textarea>
+                                  placeholder="Escreva sua opinião sobre a obra..."></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="form-editar-{{ registro.id }}" class="btn btn-primary">
-                    <i class="bi bi-check-lg me-1"></i> Salvar Alterações
+                <button type="submit" form="form-adicionar-{{ obra.id }}" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i> Salvar Registro
                 </button>
             </div>
         </div>

@@ -15,6 +15,10 @@ export const routes: Routes = [
     loadComponent: () => import('./cadastro/cadastro.page').then( m => m.CadastroPage)
   },
   {
+    path: 'registros-usuario/:id',
+    loadComponent: () => import('./registros-usuario/registros-usuario.page').then( m => m.RegistrosUsuarioPage)
+  },
+  {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },
