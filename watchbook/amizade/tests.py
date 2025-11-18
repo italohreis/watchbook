@@ -8,6 +8,7 @@ class TestesModelAmizade(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='user1', password='12345')
         self.user2 = User.objects.create_user(username='user2', password='12345')
+        self.user3 = User.objects.create_user(username='user3', password='12345')
         
         self.amizade_pendente = Amizade.objects.create(
             de_usuario=self.user1,
@@ -17,7 +18,7 @@ class TestesModelAmizade(TestCase):
         
         self.amizade_aceita = Amizade.objects.create(
             de_usuario=self.user1,
-            para_usuario=User.objects.create_user(username='user3', password='12345'),
+            para_usuario=self.user3,
             status='ACEITO'
         )
     

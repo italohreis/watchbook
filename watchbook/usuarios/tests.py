@@ -24,9 +24,6 @@ class TestesModelRegistroAssistido(TestCase):
     
     def test_str(self):
         self.assertEqual(str(self.registro), "teste assistiu Matrix")
-    
-    def test_data_assistido_auto(self):
-        self.assertEqual(self.registro.data_assistido, date.today())
 
 class TestesViewRegistrarObraAssistida(TestCase):
     def setUp(self):

@@ -28,9 +28,6 @@ class RegistrarObraAssistida(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Registro salvo com sucesso!')
         return super().form_valid(form)
 
-    def get_template_names(self):
-        return []
-
     def form_invalid(self, form):
         messages.error(self.request, 'Não foi possível salvar. Verifique os campos e tente novamente.')
         return redirect(self.request.META.get('HTTP_REFERER', 'buscar-obras'))
@@ -39,15 +36,10 @@ class EditarRegistroAssistido(LoginRequiredMixin, UpdateView):
     model = RegistroAssistido
     form_class = RegistroAssistidoForm
     success_url = reverse_lazy('meus-registros')
-    login_url = '/'
 
     def get_queryset(self):
-        # Garante que o usuário só pode editar seus próprios registros
+        # usuário só pode editar seus próprios registros
         return RegistroAssistido.objects.filter(usuario=self.request.user)
-    
-    def get_template_names(self):
-        # Não renderiza template, apenas processa o POST
-        return []
     
     def form_invalid(self, form):
         # Em caso de erro, redireciona de volta
@@ -56,19 +48,10 @@ class EditarRegistroAssistido(LoginRequiredMixin, UpdateView):
 class ExcluirRegistroAssistido(LoginRequiredMixin, DeleteView):
     model = RegistroAssistido
     success_url = reverse_lazy('meus-registros')
-    login_url = '/'
 
     def get_queryset(self):
-        # Garante que o usuário só pode excluir seus próprios registros
+        # usuário só pode excluir seus próprios registros
         return RegistroAssistido.objects.filter(usuario=self.request.user)
-    
-    def get_template_names(self):
-        # Não renderiza template de confirmação, apenas processa o POST
-        return []
-    
-    def get(self, request, *args, **kwargs):
-        # Redireciona GET para a página de registros (evita acesso direto)
-        return redirect('meus-registros')
 
 class MeusRegistros(LoginRequiredMixin, ListView):
     model = RegistroAssistido
@@ -100,7 +83,6 @@ class CadastrarUsuario(CreateView):
 
 class PerfilUsuarioView(LoginRequiredMixin, TemplateView):
     template_name = 'usuarios/perfil.html'
-    login_url = '/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,7 +121,6 @@ class RegistrosUsuario(LoginRequiredMixin, ListView):
     model = RegistroAssistido
     template_name = 'usuarios/registros_usuario.html'
     context_object_name = 'registros'
-    login_url = '/'
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')

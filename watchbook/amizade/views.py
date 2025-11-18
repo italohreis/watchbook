@@ -10,7 +10,6 @@ class PaginaAmigos(LoginRequiredMixin, ListView):
     model = User
     template_name = 'amizade/amigos.html'
     context_object_name = 'resultados'
-    login_url = '/'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -85,7 +84,6 @@ class PaginaAmigos(LoginRequiredMixin, ListView):
         return context
             
 class EnviarPedidoAmizade(LoginRequiredMixin, View):
-    login_url = '/'
 
     def post(self, request, user_id):
         para_usuario = get_object_or_404(User, pk=user_id)
@@ -100,7 +98,6 @@ class EnviarPedidoAmizade(LoginRequiredMixin, View):
         return redirect('pagina-amigos')
     
 class ResponderPedidoAmizade(LoginRequiredMixin, View):
-    login_url = '/'
 
     def post(self, request, pedido_id, acao):
         pedido = get_object_or_404(Amizade, pk=pedido_id)
@@ -118,7 +115,6 @@ class ResponderPedidoAmizade(LoginRequiredMixin, View):
 
 
 class RemoverAmizade(LoginRequiredMixin, View):
-    login_url = '/'
 
     def post(self, request, user_id):
         amigo = get_object_or_404(User, pk=user_id)
