@@ -4,9 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   LoadingController,
   NavController,
   ToastController,
@@ -16,10 +13,6 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
-  IonList,
-  IonItem,
-  IonThumbnail,
-  IonLabel,
   IonIcon,
   IonBadge,
   IonGrid,
@@ -73,19 +66,12 @@ interface Registro {
     IonContent,
     CommonModule,
     FormsModule,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonText,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
-    IonList,
-    IonItem,
-    IonThumbnail,
-    IonLabel,
     IonIcon,
     IonBadge,
     IonGrid,
@@ -127,7 +113,7 @@ export class RegistrosUsuarioPage implements OnInit {
 
     if (registro) {
       this.usuario = Object.assign(new Usuario(), registro);
-      
+
       // Pega o ID da rota
       this.route.params.subscribe(params => {
         this.usuario_id = +params['id'];
@@ -158,7 +144,7 @@ export class RegistrosUsuarioPage implements OnInit {
     }
 
     let url = `${environment.apiUrl}/usuarios/${this.usuario_id}/registros/`;
-    
+
     // Adiciona filtro de tipo se não for 'todos'
     if (this.tipo_filtro !== 'todos') {
       url += `?tipo=${this.tipo_filtro}`;

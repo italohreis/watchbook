@@ -10,7 +10,6 @@ import {
   IonContent,
   IonItem,
   IonLabel,
-  IonInput,
   IonTextarea,
   IonIcon,
   ModalController
@@ -34,7 +33,6 @@ import { closeOutline, star, starOutline } from 'ionicons/icons';
     IonContent,
     IonItem,
     IonLabel,
-    IonInput,
     IonTextarea,
     IonIcon
   ]

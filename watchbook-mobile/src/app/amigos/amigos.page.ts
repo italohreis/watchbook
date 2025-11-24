@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   LoadingController,
   NavController,
   ToastController,
@@ -78,9 +75,6 @@ interface UsuarioBusca {
     IonContent,
     CommonModule,
     FormsModule,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonText,
     IonCard,
     IonCardHeader,
@@ -338,8 +332,8 @@ export class AmigosPage implements OnInit {
   }
 
   async confirmarRemoverAmigo(amizade: Amizade) {
-    const amigo = amizade.de_usuario.id === this.usuario.id 
-      ? amizade.para_usuario 
+    const amigo = amizade.de_usuario.id === this.usuario.id
+      ? amizade.para_usuario
       : amizade.de_usuario;
 
     const alert = await this.controle_alerta.create({
@@ -411,24 +405,24 @@ export class AmigosPage implements OnInit {
 
   verificarStatusAmizade(usuario_id: number): string {
     // Verifica se já é amigo (status ACEITO)
-    const jaAmigo = this.todas_amizades.find(a => 
-      a.status === 'ACEITO' && 
+    const jaAmigo = this.todas_amizades.find(a =>
+      a.status === 'ACEITO' &&
       (a.de_usuario.id === usuario_id || a.para_usuario.id === usuario_id)
     );
     if (jaAmigo) return 'ACEITO';
 
     // Verifica se tem pedido pendente enviado (eu enviei para ele)
-    const pedidoEnviado = this.todas_amizades.find(a => 
+    const pedidoEnviado = this.todas_amizades.find(a =>
       a.status === 'PENDENTE' &&
-      a.de_usuario.id === this.usuario.id && 
+      a.de_usuario.id === this.usuario.id &&
       a.para_usuario.id === usuario_id
     );
     if (pedidoEnviado) return 'PENDENTE_ENVIADO';
 
     // Verifica se tem pedido pendente recebido (ele enviou para mim)
-    const pedidoRecebido = this.todas_amizades.find(a => 
+    const pedidoRecebido = this.todas_amizades.find(a =>
       a.status === 'PENDENTE' &&
-      a.de_usuario.id === usuario_id && 
+      a.de_usuario.id === usuario_id &&
       a.para_usuario.id === this.usuario.id
     );
     if (pedidoRecebido) return 'PENDENTE_RECEBIDO';
@@ -437,20 +431,20 @@ export class AmigosPage implements OnInit {
   }
 
   verPerfilAmigo(amizade: Amizade) {
-    const usuario_id = amizade.de_usuario.id === this.usuario.id 
-      ? amizade.para_usuario.id 
+    const usuario_id = amizade.de_usuario.id === this.usuario.id
+      ? amizade.para_usuario.id
       : amizade.de_usuario.id;
 
     this.controle_navegacao.navigateForward(`/perfil/${usuario_id}`);
   }
 
   verRegistrosAmigo(amizade: Amizade) {
-    const usuario_id = amizade.de_usuario.id === this.usuario.id 
-      ? amizade.para_usuario.id 
+    const usuario_id = amizade.de_usuario.id === this.usuario.id
+      ? amizade.para_usuario.id
       : amizade.de_usuario.id;
-    
-    const username = amizade.de_usuario.id === this.usuario.id 
-      ? amizade.para_usuario.username 
+
+    const username = amizade.de_usuario.id === this.usuario.id
+      ? amizade.para_usuario.username
       : amizade.de_usuario.username;
 
     this.controle_navegacao.navigateForward(`/registros-usuario/${usuario_id}`, {

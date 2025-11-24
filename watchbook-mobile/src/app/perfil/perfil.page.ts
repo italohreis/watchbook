@@ -4,13 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   LoadingController,
   NavController,
   ToastController,
-  IonText,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -87,11 +83,7 @@ interface PerfilData {
     IonCardTitle,
     IonCardHeader,
     IonCard,
-    IonText,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonIcon,
     IonThumbnail,
     RouterLink,
@@ -145,7 +137,7 @@ export class PerfilPage implements OnInit {
 
     if (registro) {
       this.usuario = Object.assign(new Usuario(), registro);
-      
+
       // Verifica se há um ID na rota (visualizando outro usuário)
       this.route.params.subscribe(params => {
         if (params['id']) {
@@ -180,7 +172,7 @@ export class PerfilPage implements OnInit {
     await loading.present();
 
     // Define a URL com base em qual perfil está sendo visualizado
-    const url = this.isPerfilProprio 
+    const url = this.isPerfilProprio
       ? `${environment.apiUrl}/usuarios/meu_perfil/`
       : `${environment.apiUrl}/usuarios/${this.usuario_id}/perfil/`;
 
