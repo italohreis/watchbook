@@ -21,6 +21,8 @@ import {
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
+import { Registro } from '../inicio/models/registro.model';
+import { PerfilData } from './models/perfil-data.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { environment } from '../../environments/environment';
@@ -39,33 +41,6 @@ import {
   listOutline,
   timeOutline
 } from 'ionicons/icons';
-
-interface Registro {
-  id: number;
-  obra: {
-    id: number;
-    titulo: string;
-    poster: string;
-    tipo: string;
-    genero: string;
-    ano_lancamento: number;
-    diretor: string;
-  };
-  nota: number;
-  critica: string;
-  data_assistido: string;
-}
-
-interface PerfilData {
-  id?: number;
-  username?: string;
-  total_obras: number;
-  total_filmes: number;
-  total_series: number;
-  genero_favorito: string | null;
-  nota_media: number | null;
-  total_amigos: number;
-}
 
 @Component({
   standalone: true,

@@ -26,6 +26,8 @@ import {
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
+import { Amizade } from './models/amizade.model';
+import { UsuarioBusca } from './models/usuario-busca.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { environment } from '../../environments/environment';
@@ -40,30 +42,6 @@ import {
   peopleOutline,
   listOutline
 } from 'ionicons/icons';
-
-interface Amizade {
-  id: number;
-  de_usuario: {
-    id: number;
-    username: string;
-    first_name: string;
-  };
-  para_usuario: {
-    id: number;
-    username: string;
-    first_name: string;
-  };
-  status: string;
-  status_display: string;
-  data_criacao: string;
-}
-
-interface UsuarioBusca {
-  id: number;
-  username: string;
-  first_name: string;
-  email: string;
-}
 
 @Component({
   selector: 'app-amigos',

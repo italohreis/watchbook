@@ -26,6 +26,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
+import { RegistroAssistido } from './models/registro-assistido.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { ModalEditarRegistroComponent } from './modal-editar-registro/modal-editar-registro.component';
@@ -42,23 +43,6 @@ import {
   trashOutline,
   createOutline
 } from 'ionicons/icons';
-
-export interface RegistroAssistido {
-  id: number;
-  obra: {
-    id: number;
-    titulo: string;
-    ano_lancamento: number;
-    diretor: string;
-    genero: string;
-    poster: string;
-    tipo: string;
-    tipo_display: string;
-  };
-  nota: number;
-  critica: string;
-  data_assistido: string;
-}
 
 @Component({
   standalone: true,

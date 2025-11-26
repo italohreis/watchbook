@@ -23,6 +23,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
 import { Usuario } from '../login/models/usuario.model';
+import { Registro } from '../inicio/models/registro.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { TipoFilterComponent } from '../components/tipo-filter/tipo-filter.component';
@@ -35,25 +36,6 @@ import {
   starOutline,
   star
 } from 'ionicons/icons';
-
-interface Registro {
-  id: number;
-  usuario: number;
-  usuario_nome: string;
-  obra: {
-    id: number;
-    titulo: string;
-    poster: string;
-    tipo: string;
-    tipo_display: string;
-    genero: string;
-    ano_lancamento: number;
-    diretor: string;
-  };
-  nota: number;
-  critica: string;
-  data_assistido: string;
-}
 
 @Component({
   selector: 'app-registros-usuario',
