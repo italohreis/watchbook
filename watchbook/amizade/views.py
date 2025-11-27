@@ -106,7 +106,7 @@ class ResponderPedidoAmizade(LoginRequiredMixin, View):
             raise Http404("Você não tem permissão para responder a este pedido.")
 
         if acao == 'aceitar':
-            pedido.status = Amizade.StatusAmizade.ACEITO
+            pedido.status = 'ACEITO'
             pedido.save()
         elif acao == 'recusar':
             pedido.delete()
