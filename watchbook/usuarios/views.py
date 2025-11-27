@@ -52,6 +52,10 @@ class ExcluirRegistroAssistido(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         # usuário só pode excluir seus próprios registros
         return RegistroAssistido.objects.filter(usuario=self.request.user)
+    
+    def get(self, request, *args, **kwargs):
+        # Redireciona requisições GET para meus-registros
+        return redirect('meus-registros')
 
 class MeusRegistros(LoginRequiredMixin, ListView):
     model = RegistroAssistido
