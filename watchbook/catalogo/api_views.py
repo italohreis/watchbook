@@ -19,17 +19,11 @@ class ObraViewSet(viewsets.ModelViewSet):
     """
     queryset = Obra.objects.all()
     serializer_class = ObraSerializer
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['titulo', 'diretor', 'genero']
     ordering_fields = ['titulo']
     ordering = ['titulo']
-    
-    def get_permissions(self):
-        """
-        Leitura permite qualquer um autenticado
-        """
-        if self.action in ['list', 'retrieve']:
-            return [IsAuthenticated()]
     
     def get_queryset(self):
         """
